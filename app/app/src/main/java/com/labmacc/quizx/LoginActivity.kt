@@ -11,6 +11,7 @@ import androidx.annotation.StringRes
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.labmacc.quizx.data.model.LoggedInUser
+import com.labmacc.quizx.data.model.User
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -82,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
             vm.login(email.text.toString(), password.text.toString())
         }
         register.setOnClickListener {
-            vm.register(email.text.toString(), password.text.toString())
+            vm.register(email.text.toString(), password.text.toString(), name.text.toString())
         }
     }
 
@@ -97,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 
-    private fun updateUiWithUser(model: LoggedInUser) {
+    private fun updateUiWithUser(model: User) {
         val displayName = model.displayName
         Toast.makeText(
             applicationContext,

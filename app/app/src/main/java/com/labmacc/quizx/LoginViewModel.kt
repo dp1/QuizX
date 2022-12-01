@@ -7,14 +7,15 @@ import android.util.Patterns
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.labmacc.quizx.data.CloudFirestoreDataSource
 import com.labmacc.quizx.data.FirebaseAuthDataSource
 import com.labmacc.quizx.data.LoginRepository
-import com.labmacc.quizx.data.model.LoggedInUser
 import kotlinx.coroutines.launch
 import com.labmacc.quizx.data.Result
+import com.labmacc.quizx.data.model.User
 
 data class LoginResult(
-    val success: LoggedInUser? = null,
+    val success: User? = null,
     val error: Int? = null
 )
 
@@ -32,7 +33,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
             initializer {
                 LoginViewModel(
                     loginRepository = LoginRepository(
-                        dataSource = FirebaseAuthDataSource()
+                        authDataSource = FirebaseAuthDataSource(),
+                        firestoreDataSource = CloudFirestoreDataSource()
                     )
                 )
             }
@@ -63,7 +65,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
     }
 
-    fun register(email: String, password: String) {
+    fun register(email: String, password: String, name: String) {
         if (!isRegisterMode) {
             enterRegisterMode()
             return
@@ -71,7 +73,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
         _progressVisible.value = true
         viewModelScope.launch {
-            val result = loginRepository.register(email, password)
+            val result = loginRepository.register(email, password, name)
             if (result is Result.Success) {
                 _loginResult.value = LoginResult(success = result.data)
             } else {

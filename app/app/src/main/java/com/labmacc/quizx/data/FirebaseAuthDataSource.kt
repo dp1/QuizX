@@ -1,6 +1,5 @@
 package com.labmacc.quizx.data
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.labmacc.quizx.data.model.LoggedInUser
 import kotlinx.coroutines.tasks.await
@@ -13,7 +12,7 @@ class FirebaseAuthDataSource {
         return try {
             val res = auth.createUserWithEmailAndPassword(username, password).await()
             res.user?.let {
-                Result.Success(LoggedInUser(userId = it.uid, displayName = username))
+                Result.Success(LoggedInUser(uuid = it.uid))
             } ?: Result.Error(IOException("Null user"))
         } catch (e: Throwable) {
             return Result.Error(IOException("Error creating user", e))
@@ -24,7 +23,7 @@ class FirebaseAuthDataSource {
         return try {
             val res = auth.signInWithEmailAndPassword(username, password).await()
             res.user?.let {
-                Result.Success(LoggedInUser(userId = it.uid, displayName = username))
+                Result.Success(LoggedInUser(uuid = it.uid))
             } ?: Result.Error(IOException("Null user"))
         } catch (e: Throwable) {
             Result.Error(IOException("Error logging in", e))
