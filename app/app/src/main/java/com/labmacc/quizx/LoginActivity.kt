@@ -31,15 +31,6 @@ class LoginActivity : AppCompatActivity() {
         val loading = binding.loading
 
         vm.loginFormState.observe(this, Observer {
-            if (it.isRegister) {
-                name.visibility = View.VISIBLE
-                login.visibility = View.INVISIBLE
-            }
-            else {
-                name.visibility = View.INVISIBLE
-                login.visibility = View.VISIBLE
-            }
-
             login.isEnabled = it.isDataValid
             register.isEnabled = it.isDataValid
 
@@ -61,6 +52,11 @@ class LoginActivity : AppCompatActivity() {
             if (it.success != null) {
                 updateUiWithUser(it.success)
             }
+        })
+
+        vm.registerMode.observe(this, Observer {
+            name.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            login.visibility = if (it) View.INVISIBLE else View.VISIBLE
         })
 
         vm.progressBarvisible.observe(this, Observer {

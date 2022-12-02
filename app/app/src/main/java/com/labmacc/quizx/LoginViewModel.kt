@@ -23,7 +23,6 @@ data class LoginFormState(
     val emailError: Int? = null,
     val passwordError: Int? = null,
     val nameError: Int? = null,
-    val isRegister: Boolean = false,
     val isDataValid: Boolean = false
 )
 
@@ -47,7 +46,10 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
-    private val _progressVisible = MutableLiveData<Boolean>(false)
+    private val _registerMode = MutableLiveData(false)
+    val registerMode: LiveData<Boolean> = _registerMode
+
+    private val _progressVisible = MutableLiveData(false)
     val progressBarvisible: LiveData<Boolean> = _progressVisible
 
     private var isRegisterMode = false
@@ -85,20 +87,19 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     fun loginDataChanged(email: String, password: String, name: String) {
         if (!isEmailValid(email)) {
-            _loginForm.value = LoginFormState(emailError = R.string.invalid_email, isRegister = isRegisterMode)
+            _loginForm.value = LoginFormState(emailError = R.string.invalid_email)
         } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password, isRegister = isRegisterMode)
+            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
         } else if (isRegisterMode && !isNameValid(name)) {
-            _loginForm.value = LoginFormState(nameError = R.string.invalid_name, isRegister = isRegisterMode)
+            _loginForm.value = LoginFormState(nameError = R.string.invalid_name)
         } else {
-            _loginForm.value = LoginFormState(isDataValid = true, isRegister = isRegisterMode)
+            _loginForm.value = LoginFormState(isDataValid = true)
         }
     }
 
     private fun enterRegisterMode() {
         isRegisterMode = true
-        val state = _loginForm.value ?: LoginFormState()
-        _loginForm.value = state.copy(isRegister = true)
+        _registerMode.value = true
     }
 
     private fun isEmailValid(email: String): Boolean {
