@@ -2,6 +2,7 @@ package com.labmacc.quizx.data
 
 import com.labmacc.quizx.data.model.LoggedInUser
 import com.labmacc.quizx.data.model.User
+import com.labmacc.quizx.data.util.Result
 
 class LoginRepository(
     val authDataSource: FirebaseAuthDataSource,

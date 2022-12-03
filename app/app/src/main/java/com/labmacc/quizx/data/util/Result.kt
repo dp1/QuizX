@@ -1,4 +1,4 @@
-package com.labmacc.quizx.data
+package com.labmacc.quizx.data.util
 
 /**
  * A generic class that holds a value with its loading status.

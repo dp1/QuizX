@@ -2,6 +2,7 @@ package com.labmacc.quizx.data
 
 import com.google.firebase.auth.FirebaseAuth
 import com.labmacc.quizx.data.model.LoggedInUser
+import com.labmacc.quizx.data.util.Result
 import kotlinx.coroutines.tasks.await
 import java.io.IOException
 

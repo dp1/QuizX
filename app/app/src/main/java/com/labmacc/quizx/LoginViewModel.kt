@@ -11,7 +11,7 @@ import com.labmacc.quizx.data.CloudFirestoreDataSource
 import com.labmacc.quizx.data.FirebaseAuthDataSource
 import com.labmacc.quizx.data.LoginRepository
 import kotlinx.coroutines.launch
-import com.labmacc.quizx.data.Result
+import com.labmacc.quizx.data.util.Result
 import com.labmacc.quizx.data.model.User
 
 data class LoginResult(
