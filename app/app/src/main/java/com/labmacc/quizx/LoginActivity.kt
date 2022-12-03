@@ -1,5 +1,6 @@
 package com.labmacc.quizx
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -101,5 +102,7 @@ class LoginActivity : AppCompatActivity() {
             "Welcome $displayName",
             Toast.LENGTH_LONG
         ).show()
+
+        startActivity(Intent(this, RankingActivity::class.java))
     }
 }

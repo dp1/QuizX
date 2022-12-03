@@ -1,6 +1,7 @@
 package com.labmacc.quizx.data
 
 import android.util.Log
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -31,7 +32,7 @@ class CloudFirestoreDataSource {
     }
 
     fun listenForRatingChanges(listener: (List<User>) -> Unit) {
-        db.collection("users").addSnapshotListener { value, error ->
+        db.collection("users").orderBy("score", Query.Direction.DESCENDING).addSnapshotListener { value, error ->
             if (error != null) {
                 Log.w(TAG, "Listen failed", error)
             } else {

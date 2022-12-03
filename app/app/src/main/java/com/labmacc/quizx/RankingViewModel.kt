@@ -23,7 +23,7 @@ class RankingViewModel(private val rankingRepository: RankingRepository) : ViewM
     }
 
     private val _ranking = MutableLiveData<List<User>>()
-    val ranking: LiveData<*> = _ranking
+    val ranking: LiveData<List<User>> = _ranking
 
     init {
         rankingRepository.listenForRatingChanges { _ranking.value = it }
