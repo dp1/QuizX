@@ -93,7 +93,7 @@ class RankingActivity : AppCompatActivity() {
 
     private lateinit var sensorManager: SensorManager
     private val shakeListener = ShakeListener(5_000) {
-        Toast.makeText(this, "Triggered", Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this, CreateQuizActivity::class.java))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
