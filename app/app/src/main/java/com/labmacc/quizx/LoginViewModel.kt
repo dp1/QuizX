@@ -31,10 +31,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         val Factory = viewModelFactory {
             initializer {
                 LoginViewModel(
-                    loginRepository = LoginRepository(
-                        authDataSource = FirebaseAuthDataSource(),
-                        firestoreDataSource = CloudFirestoreDataSource()
-                    )
+                    LoginRepository.instance
                 )
             }
         }

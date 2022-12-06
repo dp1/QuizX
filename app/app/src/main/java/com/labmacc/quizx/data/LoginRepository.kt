@@ -8,8 +8,16 @@ class LoginRepository(
     val authDataSource: FirebaseAuthDataSource,
     val firestoreDataSource: CloudFirestoreDataSource)
 {
-    var loggedInUser: LoggedInUser? = null
-        private set
+    companion object {
+        val instance by lazy {
+            LoginRepository(
+                authDataSource = FirebaseAuthDataSource(),
+                firestoreDataSource = CloudFirestoreDataSource()
+            )
+        }
+    }
+
+    private var loggedInUser: LoggedInUser? = null
 
     var user: User? = null
         private set
