@@ -119,6 +119,11 @@ class RankingActivity : AppCompatActivity() {
                 item.rankingPos.text = getString(R.string.ranking_pos, i+1)
                 item.rankingName.text = user.displayName
                 item.rankingScore.text = getString(R.string.ranking_score, user.score)
+
+                if (user.uuid == vm.currentUser()?.uuid) {
+                    item.rankingName.text = "THIS IS YOU"
+                }
+
                 table.addView(item.root)
             }
         })
