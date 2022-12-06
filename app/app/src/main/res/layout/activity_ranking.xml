@@ -6,14 +6,25 @@
     android:layout_height="match_parent"
     android:background="@drawable/day_bg"
     tools:context=".RankingActivity">
-    <TableLayout
-        android:id="@+id/table"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        tools:layout_editor_absoluteY="10dp"
-        android:divider="?android:attr/dividerHorizontal"
-        android:showDividers="middle"
-        />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableLayout
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="?android:attr/dividerHorizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:showDividers="middle"
+            tools:layout_editor_absoluteY="10dp" />
+    </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
