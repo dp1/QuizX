@@ -4,25 +4,41 @@
     android:layout_height="wrap_content">
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#F0F7F7" android:padding="5dp">
+        android:layout_height="60dp"
+        android:background="@drawable/text_bg"
+        android:padding="5dp">
         <TextView
             android:id="@+id/ranking_pos"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
-            android:text="" />
+            android:text=""
+            android:textSize="20dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/wick"
+            />
+        <!--
+        android:textColor="#778899"-->
         <TextView
             android:id="@+id/ranking_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="" />
+            android:text=""
+            android:layout_marginTop="8dp"
+            android:textSize="20dp"
+            android:fontFamily="@font/wick"
+
+             />
         <TextView
             android:id="@+id/ranking_score"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="" />
+            android:text=""
+            android:textSize="20dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/wick"
+            />
     </TableRow>
 </LinearLayout>
