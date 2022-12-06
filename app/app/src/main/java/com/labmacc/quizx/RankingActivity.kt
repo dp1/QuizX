@@ -26,6 +26,10 @@ class ShakeListener(val triggerDelayMs: Long, val onTrigger: () -> Unit) : Senso
     private val threshold = 3
     private var lastTrigger: Long = 0
 
+    init {
+        lastTrigger = System.currentTimeMillis()
+    }
+
     fun register(sensorManager: SensorManager) {
         sensorManager.registerListener(
             this,
@@ -92,7 +96,7 @@ class RankingActivity : AppCompatActivity() {
     private val vm: RankingViewModel by viewModels { RankingViewModel.Factory }
 
     private lateinit var sensorManager: SensorManager
-    private val shakeListener = ShakeListener(5_000) {
+    private val shakeListener = ShakeListener(10_000) {
         startActivity(Intent(this, CreateQuizActivity::class.java))
     }
 
