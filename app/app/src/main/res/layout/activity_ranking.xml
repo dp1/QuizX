@@ -13,5 +13,7 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         tools:layout_editor_absoluteY="10dp"
+        android:divider="?android:attr/dividerHorizontal"
+        android:showDividers="middle"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
