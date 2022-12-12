@@ -10,17 +10,33 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Observer
+import com.labmacc.quizx.data.model.User
 import com.labmacc.quizx.databinding.ActivityRankingBinding
 import com.labmacc.quizx.databinding.RankingUserBinding
+import com.labmacc.quizx.ui.Ranking
 import kotlin.math.sqrt
 
 class ShakeListener(val triggerDelayMs: Long, val onTrigger: () -> Unit) : SensorEventListener {
     companion object { const val TAG = "SHAKE" }
 
     private var filteredAcceleration = 0f
-    private val alpha = 0.1f
+    private val alpha = 0.05f
     private var gravity: FloatArray? = null
 
     private val threshold = 3
@@ -89,10 +105,9 @@ class ShakeListener(val triggerDelayMs: Long, val onTrigger: () -> Unit) : Senso
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 }
 
-class RankingActivity : AppCompatActivity() {
+class RankingActivity : ComponentActivity() {
     companion object { const val TAG = "RankingA" }
 
-    private lateinit var binding: ActivityRankingBinding
     private val vm: RankingViewModel by viewModels { RankingViewModel.Factory }
 
     private lateinit var sensorManager: SensorManager
@@ -102,31 +117,9 @@ class RankingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityRankingBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContent { Ranking(vm) }
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
-        val table = binding.table
-
-        vm.ranking.observe(this, Observer { users ->
-            Log.i(TAG, "Received new ranking ${users.toString()}")
-
-            table.removeAllViews()
-            for ((i,user) in users.withIndex()) {
-                val item = RankingUserBinding.inflate(layoutInflater)
-                item.rankingPos.text = getString(R.string.ranking_pos, i+1)
-                item.rankingName.text = user.displayName
-                item.rankingScore.text = getString(R.string.ranking_score, user.score)
-
-                if (user.uuid == vm.currentUser()?.uuid) {
-                    item.rankingName.text = "THIS IS YOU"
-                }
-
-                table.addView(item.root)
-            }
-        })
     }
 
     override fun onResume() {

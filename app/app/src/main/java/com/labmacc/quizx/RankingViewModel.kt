@@ -1,13 +1,10 @@
 package com.labmacc.quizx
 
-import android.content.Context
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.labmacc.quizx.data.CloudFirestoreDataSource
 import com.labmacc.quizx.data.LoginRepository
 import com.labmacc.quizx.data.RankingRepository
 import com.labmacc.quizx.data.model.User
@@ -27,11 +24,13 @@ class RankingViewModel(
         }
     }
 
-    private val _ranking = MutableLiveData<List<User>>()
-    val ranking: LiveData<List<User>> = _ranking
+    val ranking = mutableStateListOf<User>()
 
     init {
-        rankingRepository.listenForRatingChanges { _ranking.value = it }
+        rankingRepository.listenForRatingChanges {
+            ranking.clear()
+            ranking.addAll(it)
+        }
     }
 
     fun currentUser(): User? {
