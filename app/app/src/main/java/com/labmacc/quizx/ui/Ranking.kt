@@ -39,3 +39,9 @@ fun RankingUser(idx: Int, user: User) {
         Text(text = stringResource(R.string.ranking_score, user.score))
     }
 }
+
+@Preview
+@Composable
+fun PreviewRanking() {
+    Ranking(RankingViewModel(RankingRepository.instance, LoginRepository.instance))
+}
