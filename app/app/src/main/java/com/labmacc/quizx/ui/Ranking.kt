@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -26,24 +27,27 @@ import com.labmacc.quizx.data.model.User
 @Composable
 fun Ranking(vm: RankingViewModel) {
     val users = vm.ranking
+    val (currentUser, _) = remember { vm.currentUser() }
 
     Column(modifier = Modifier
         .verticalScroll(rememberScrollState())
         .background(Color.Cyan)
     ) {
         for (i in 0 until users.size) {
-            RankingUser(i, users[i])
+            RankingUser(i, users[i], currentUser)
         }
     }
 }
 
 @Composable
-fun RankingUser(idx: Int, user: User) {
+fun RankingUser(idx: Int, user: User, currentUser: User?) {
+    val background = if (currentUser?.uuid == user.uuid) Color.Green else Color.LightGray
+
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(5.dp)
         .clip(RoundedCornerShape(10.dp))
-        .background(Color.LightGray)
+        .background(background)
         .padding(16.dp)
     ) {
         Text(

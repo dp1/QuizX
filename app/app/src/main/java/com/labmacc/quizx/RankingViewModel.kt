@@ -1,6 +1,8 @@
 package com.labmacc.quizx
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.initializer
@@ -33,7 +35,7 @@ class RankingViewModel(
         }
     }
 
-    fun currentUser(): User? {
+    fun currentUser(): MutableState<User?> {
         return loginRepository.user
     }
 }
