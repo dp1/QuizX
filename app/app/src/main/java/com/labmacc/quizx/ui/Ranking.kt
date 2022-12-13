@@ -35,7 +35,7 @@ fun Ranking(vm: RankingViewModel) {
     LazyColumn(modifier = Modifier
         .background(Color.Cyan)
     ) {
-        itemsIndexed(users) { i, user ->
+        itemsIndexed(users, key = { _, user -> user.uuid }) { i, user ->
             RankingUser(i, user, currentUser)
         }
     }
