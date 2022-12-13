@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -29,12 +32,11 @@ fun Ranking(vm: RankingViewModel) {
     val users = vm.ranking
     val (currentUser, _) = remember { vm.currentUser() }
 
-    Column(modifier = Modifier
-        .verticalScroll(rememberScrollState())
+    LazyColumn(modifier = Modifier
         .background(Color.Cyan)
     ) {
-        for (i in 0 until users.size) {
-            RankingUser(i, users[i], currentUser)
+        itemsIndexed(users) { i, user ->
+            RankingUser(i, user, currentUser)
         }
     }
 }
