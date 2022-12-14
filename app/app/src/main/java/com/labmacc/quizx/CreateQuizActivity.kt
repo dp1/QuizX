@@ -70,31 +70,24 @@ class CreateQuizActivity : ComponentActivity() {
 
     private fun takePhoto(
         imageCapture: ImageCapture,
-        outputDirectory: File,
-        executor: Executor,
-        onImageCaptured: (Uri) -> Unit,
-        onError: (ImageCaptureException) -> Unit
     ) {
-
-        val photoFile = File(
-            outputDirectory,
-            "asd.jpg"
-        )
-
+        val photoFile = File(outputDirectory, "picture.jpg")
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
         imageCapture.takePicture(
             outputOptions,
-            executor,
+            cameraExecutor,
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exception: ImageCaptureException) {
                     Log.e(TAG, "Take photo error:", exception)
-                    onError(exception)
                 }
 
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    val savedUri = Uri.fromFile(photoFile)
-                    onImageCaptured(savedUri)
+                    val uri = Uri.fromFile(photoFile)
+                    Log.i(TAG, "Image captured: $uri")
+                    shouldShowCamera.value = false
+                    photoUri = uri
+                    shouldShowPhoto.value = true
                 }
             })
     }
@@ -104,15 +97,7 @@ class CreateQuizActivity : ComponentActivity() {
 
         setContent {
             if (shouldShowCamera.value) {
-                CameraView(onClick = { imageCapture ->
-                    takePhoto(
-                        imageCapture = imageCapture,
-                        outputDirectory = outputDirectory,
-                        executor = cameraExecutor,
-                        onImageCaptured = ::handleImageCapture,
-                        onError = { Log.e(TAG, "View error:", it) }
-                    )
-                })
+                CameraView(onClick = ::takePhoto)
             } else if (shouldShowPhoto.value) {
                 ImageView(
                     photoUri = photoUri,
@@ -126,18 +111,10 @@ class CreateQuizActivity : ComponentActivity() {
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
-    private fun handleImageCapture(uri: Uri) {
-        Log.i(TAG, "Image captured: $uri")
-        shouldShowCamera.value = false
-        photoUri = uri
-        shouldShowPhoto.value = true
-    }
-
     private fun getOutputDirectory(): File {
         val mediaDir = externalMediaDirs.firstOrNull()?.let {
             File(it, resources.getString(R.string.app_name)).apply { mkdirs() }
         }
-
         return if (mediaDir != null && mediaDir.exists()) mediaDir else filesDir
     }
 
