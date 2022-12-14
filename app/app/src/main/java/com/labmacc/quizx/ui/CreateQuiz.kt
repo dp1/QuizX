@@ -86,15 +86,17 @@ fun ImageView(
     photoUri: Uri = Uri.EMPTY,
     onSubmit: () -> Unit = { }
 ) {
-    Column {
-        Image(
+    Box(modifier = Modifier.imePadding()) {
+        Image(modifier = Modifier.fillMaxHeight().align(Alignment.TopCenter),
             painter = rememberImagePainter(photoUri),
             contentDescription = null,
         )
 
-        Row( modifier = Modifier
+        Row(modifier = Modifier
             .padding(16.dp)
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .align(Alignment.BottomCenter),
             verticalAlignment = Alignment.CenterVertically) {
 
             var text by remember { mutableStateOf("") }
