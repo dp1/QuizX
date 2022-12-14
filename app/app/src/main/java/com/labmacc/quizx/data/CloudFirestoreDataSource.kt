@@ -27,8 +27,11 @@ class CloudFirestoreDataSource {
 
     suspend fun getUser(uuid: String): Result<User> {
         val res = db.collection("users").document(uuid).get().await()
-        val user = res.toObject<User>()!!
-        return Result.Success(user)
+        val user = res.toObject<User>()
+
+        return user?.let {
+            Result.Success(user)
+        } ?: Result.Error(IOException("Retrieved user is null"))
     }
 
     fun listenForRatingChanges(listener: (List<User>) -> Unit) {
