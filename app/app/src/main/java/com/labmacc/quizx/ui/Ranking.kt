@@ -2,10 +2,7 @@ package com.labmacc.quizx.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -36,6 +33,7 @@ fun Ranking(vm: RankingViewModel) {
     val (currentUser, _) = remember { vm.currentUser() }
     LazyColumn(modifier = Modifier
         .background(colorResource(R.color.skyblue))
+        .fillMaxHeight()
     ) {
         itemsIndexed(users, key = { _, user -> user.uuid }) { i, user ->
             RankingUser(i, user, currentUser)
