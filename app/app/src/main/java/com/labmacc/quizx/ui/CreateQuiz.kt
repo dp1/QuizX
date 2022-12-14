@@ -103,19 +103,24 @@ fun ImageView(
     photoUri: Uri = Uri.EMPTY,
     onSubmit: () -> Unit = { }
 ) {
-    Box(modifier = Modifier.imePadding()) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(colorResource(R.color.skyblue))
+    ) {
         Image(modifier = Modifier
-            .fillMaxHeight()
-            .align(Alignment.TopCenter),
+            .padding(10.dp)
+            .weight(1f)
+            .clip(RoundedCornerShape(10.dp))
+            .background(Color.LightGray),
             painter = rememberImagePainter(photoUri),
             contentDescription = null,
         )
 
         Row(modifier = Modifier
-            .padding(16.dp)
+            .imePadding()
+            .padding(10.dp)
             .wrapContentHeight()
-            .fillMaxWidth()
-            .align(Alignment.BottomCenter),
+            .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically) {
 
             var text by remember { mutableStateOf("") }
@@ -123,12 +128,13 @@ fun ImageView(
             TextField(
                 value = text ,
                 onValueChange = { text = it },
-                label = { Text("Enter your Answer") },
-                maxLines = 2,
+                label = { Text("Correct Answer") },
+                singleLine = true,
                 textStyle = TextStyle(color = Color.Black, fontWeight = FontWeight.Bold),
             )
-            Spacer(Modifier.size(5.dp))
-            Button( modifier = Modifier,
+            Spacer(Modifier.size(10.dp))
+            Button(modifier = Modifier
+                .wrapContentWidth(),
                 onClick = onSubmit,
                 colors = ButtonDefaults.textButtonColors(
                     backgroundColor = Color.Blue,
