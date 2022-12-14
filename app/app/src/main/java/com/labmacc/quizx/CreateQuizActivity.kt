@@ -11,25 +11,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import coil.compose.rememberImagePainter
 import com.labmacc.quizx.ui.CameraView
 import com.labmacc.quizx.ui.ImageView
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
-import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -97,7 +84,7 @@ class CreateQuizActivity : ComponentActivity() {
 
         setContent {
             if (shouldShowCamera.value) {
-                CameraView(onClick = ::takePhoto)
+                CameraView(onCapture = ::takePhoto)
             } else if (shouldShowPhoto.value) {
                 ImageView(
                     photoUri = photoUri,
