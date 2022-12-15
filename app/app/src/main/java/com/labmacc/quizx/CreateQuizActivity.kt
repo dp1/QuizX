@@ -95,7 +95,8 @@ class CreateQuizActivity : ComponentActivity() {
                         vm.createQuiz(authorId, photoUri, answer.value)
                     },
                     answer = answer.value,
-                    onAnswerChanged = { answer.value = it }
+                    onAnswerChanged = { answer.value = it },
+                    uploadState = vm.uploadState.value
                 )
             }
         }

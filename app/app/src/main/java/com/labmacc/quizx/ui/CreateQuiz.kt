@@ -32,6 +32,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import coil.compose.rememberImagePainter
 import com.labmacc.quizx.R
+import com.labmacc.quizx.UploadState
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -103,48 +104,55 @@ fun CameraView(
 fun ImageView(
     answer: String = "Answer",
     photoUri: Uri = Uri.EMPTY,
+    uploadState: UploadState = UploadState.Pending,
     onAnswerChanged: (String) -> Unit = { },
     onSubmit: () -> Unit = { }
 ) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(colorResource(R.color.skyblue))
-    ) {
-        Image(modifier = Modifier
-            .padding(10.dp)
-            .weight(1f)
-            .clip(RoundedCornerShape(10.dp))
+    Box {
+        Column(modifier = Modifier
             .fillMaxSize()
-            .background(Color.LightGray),
-            painter = rememberImagePainter(photoUri),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
-
-        Row(modifier = Modifier
-            .imePadding()
-            .padding(10.dp)
-            .wrapContentHeight()
-            .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically) {
-
-            TextField(
-                value = answer ,
-                onValueChange = onAnswerChanged,
-                label = { Text("Correct Answer") },
-                singleLine = true,
-                textStyle = TextStyle(color = Color.Black, fontWeight = FontWeight.Bold),
+            .background(colorResource(R.color.skyblue))
+        ) {
+            Image(modifier = Modifier
+                .padding(10.dp)
+                .weight(1f)
+                .clip(RoundedCornerShape(10.dp))
+                .fillMaxSize()
+                .background(Color.LightGray),
+                painter = rememberImagePainter(photoUri),
+                contentDescription = null,
+                contentScale = ContentScale.Crop
             )
-            Spacer(Modifier.size(10.dp))
-            Button(modifier = Modifier
-                .wrapContentWidth(),
-                onClick = onSubmit,
-                colors = ButtonDefaults.textButtonColors(
-                    backgroundColor = Color.Blue,
-                )) {
-                Text("SEND",color = Color.White)
-            }
 
+            Row(modifier = Modifier
+                .imePadding()
+                .padding(10.dp)
+                .wrapContentHeight()
+                .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically) {
+
+                TextField(
+                    value = answer ,
+                    onValueChange = onAnswerChanged,
+                    label = { Text("Correct Answer") },
+                    singleLine = true,
+                    textStyle = TextStyle(color = Color.Black, fontWeight = FontWeight.Bold),
+                )
+                Spacer(Modifier.size(10.dp))
+                Button(modifier = Modifier
+                    .wrapContentWidth(),
+                    onClick = onSubmit,
+                    colors = ButtonDefaults.textButtonColors(
+                        backgroundColor = Color.Blue,
+                    )) {
+                    Text("SEND",color = Color.White)
+                }
+
+            }
+        }
+
+        if (uploadState == UploadState.Pending) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
 }
