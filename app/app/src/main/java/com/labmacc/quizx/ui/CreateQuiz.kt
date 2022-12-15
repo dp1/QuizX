@@ -101,7 +101,9 @@ fun CameraView(
 @androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun ImageView(
+    answer: String = "Answer",
     photoUri: Uri = Uri.EMPTY,
+    onAnswerChanged: (String) -> Unit = { },
     onSubmit: () -> Unit = { }
 ) {
     Column(modifier = Modifier
@@ -126,11 +128,9 @@ fun ImageView(
             .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically) {
 
-            var text by remember { mutableStateOf("") }
-
             TextField(
-                value = text ,
-                onValueChange = { text = it },
+                value = answer ,
+                onValueChange = onAnswerChanged,
                 label = { Text("Correct Answer") },
                 singleLine = true,
                 textStyle = TextStyle(color = Color.Black, fontWeight = FontWeight.Bold),

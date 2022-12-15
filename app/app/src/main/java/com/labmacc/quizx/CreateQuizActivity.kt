@@ -86,9 +86,16 @@ class CreateQuizActivity : ComponentActivity() {
             if (shouldShowCamera.value) {
                 CameraView(onCapture = ::takePhoto)
             } else if (shouldShowPhoto.value) {
+                val answer = remember { mutableStateOf("") }
+
                 ImageView(
                     photoUri = photoUri,
-                    onSubmit = { }
+                    onSubmit = {
+                        val authorId = vm.currentUser().value?.uuid ?: "Author"
+                        vm.createQuiz(authorId, photoUri, answer.value)
+                    },
+                    answer = answer.value,
+                    onAnswerChanged = { answer.value = it }
                 )
             }
         }

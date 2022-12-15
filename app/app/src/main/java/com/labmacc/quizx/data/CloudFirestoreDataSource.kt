@@ -1,14 +1,17 @@
 package com.labmacc.quizx.data
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.labmacc.quizx.data.model.Quiz
 import com.labmacc.quizx.data.model.User
 import com.labmacc.quizx.data.util.Result
 import kotlinx.coroutines.tasks.await
 import java.io.IOException
+import java.util.UUID
 
 class CloudFirestoreDataSource {
     companion object { const val TAG = "FirestoreDS" }
@@ -32,6 +35,17 @@ class CloudFirestoreDataSource {
         return user?.let {
             Result.Success(user)
         } ?: Result.Error(IOException("Retrieved user is null"))
+    }
+
+    suspend fun createQuiz(authorId: String, photoUri: Uri, answer: String): Result<Unit> {
+        return try {
+            val uuid = UUID.randomUUID().toString()
+            val quiz = Quiz(uuid, authorId, photoUri.toString(), answer)
+            db.collection("quizzes").document(uuid).set(quiz).await()
+            Result.Success(Unit)
+        } catch (e : Throwable) {
+            Result.Error(IOException("Error creating quiz", e))
+        }
     }
 
     fun listenForRatingChanges(listener: (List<User>) -> Unit) {
