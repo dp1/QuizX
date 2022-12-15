@@ -34,6 +34,7 @@ fun Ranking(vm: RankingViewModel) {
     LazyColumn(modifier = Modifier
         .background(colorResource(R.color.skyblue))
         .fillMaxHeight()
+        .padding(bottom = 10.dp)
     ) {
         itemsIndexed(users, key = { _, user -> user.uuid }) { i, user ->
             RankingUser(i, user, currentUser)
@@ -47,7 +48,7 @@ fun RankingUser(idx: Int, user: User, currentUser: User?) {
 
     Row(modifier = Modifier
         .fillMaxWidth()
-        .padding(10.dp)
+        .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 0.dp)
         .clip(RoundedCornerShape(10.dp))
         .background(colorResource(R.color.blue))
         .padding(16.dp)
