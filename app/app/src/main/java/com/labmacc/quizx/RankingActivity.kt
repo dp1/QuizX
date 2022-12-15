@@ -104,7 +104,9 @@ class RankingActivity : ComponentActivity() {
 
     private lateinit var sensorManager: SensorManager
     private val shakeListener = ShakeListener(2_000) {
-        startActivity(Intent(this, CreateQuizActivity::class.java))
+        if (vm.currentUser().value != null) {
+            startActivity(Intent(this, CreateQuizActivity::class.java))
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
