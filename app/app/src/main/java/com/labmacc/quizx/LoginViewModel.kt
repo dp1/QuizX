@@ -1,9 +1,11 @@
 package com.labmacc.quizx
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -16,7 +18,8 @@ import com.labmacc.quizx.data.model.User
 
 data class LoginResult(
     val success: User? = null,
-    val error: Int? = null
+    val error: Int? = null,
+    val attempted: Boolean = false
 )
 
 data class LoginFormState(
@@ -37,66 +40,61 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
     }
 
-    private val _loginForm = MutableLiveData<LoginFormState>()
-    val loginFormState: LiveData<LoginFormState> = _loginForm
-
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
-
-    private val _registerMode = MutableLiveData(false)
-    val registerMode: LiveData<Boolean> = _registerMode
-
-    private val _progressVisible = MutableLiveData(false)
-    val progressBarvisible: LiveData<Boolean> = _progressVisible
-
-    private var isRegisterMode = false
+    private val loginFormState = mutableStateOf(LoginFormState())
+    val loginResult = mutableStateOf(LoginResult())
+    var registerMode = mutableStateOf(false)
 
     fun login(email: String, password: String) {
-        _progressVisible.value = true
         viewModelScope.launch {
+
             val result = loginRepository.login(email, password)
+            loginResult.value = LoginResult(attempted = true)
             if (result is Result.Success) {
-                _loginResult.value = LoginResult(success = result.data)
+                loginResult.value = LoginResult(success = result.data, attempted = true)
             } else {
-                _loginResult.value = LoginResult(error = R.string.login_failed)
+                loginResult.value = LoginResult(error = R.string.login_failed, attempted = true)
             }
-            _progressVisible.value = false
         }
     }
 
     fun register(email: String, password: String, name: String) {
-        if (!isRegisterMode) {
+        Log.i("prova","chiamata effettuata!")
+        if (!registerMode.value) {
             enterRegisterMode()
             return
         }
-
-        _progressVisible.value = true
         viewModelScope.launch {
             val result = loginRepository.register(email, password, name)
+            loginResult.value = LoginResult(attempted = true)
+            Log.i("prova",email+password+name)
+
             if (result is Result.Success) {
-                _loginResult.value = LoginResult(success = result.data)
+                loginResult.value = LoginResult(success = result.data, attempted = true)
+                Log.i("prova","reg ok!")
+
             } else {
-                _loginResult.value = LoginResult(error = R.string.register_failed)
+                loginResult.value = LoginResult(error = R.string.register_failed, attempted = true)
+                Log.i("prova","reg ko!")
+
             }
-            _progressVisible.value = false
         }
     }
 
     fun loginDataChanged(email: String, password: String, name: String) {
         if (!isEmailValid(email)) {
-            _loginForm.value = LoginFormState(emailError = R.string.invalid_email)
+            loginFormState.value = LoginFormState(emailError = R.string.invalid_email)
         } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
-        } else if (isRegisterMode && !isNameValid(name)) {
-            _loginForm.value = LoginFormState(nameError = R.string.invalid_name)
+            loginFormState.value = LoginFormState(passwordError = R.string.invalid_password)
+        } else if (registerMode.value && !isNameValid(name)) {
+            loginFormState.value = LoginFormState(nameError = R.string.invalid_name)
         } else {
-            _loginForm.value = LoginFormState(isDataValid = true)
+            loginFormState.value = LoginFormState(isDataValid = true)
         }
     }
 
     private fun enterRegisterMode() {
-        isRegisterMode = true
-        _registerMode.value = true
+        registerMode.value = true
+        //_registerMode.value = true
     }
 
     private fun isEmailValid(email: String): Boolean {

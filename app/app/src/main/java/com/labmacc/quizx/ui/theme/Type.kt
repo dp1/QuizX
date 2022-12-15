@@ -10,8 +10,7 @@ import androidx.compose.ui.unit.sp
 import com.labmacc.quizx.R
 
 
-val hueca= FontFamily(
-    Font(R.font.font)
+val hueca= FontFamily(Font(R.font.font)
 
 )
 val wick= FontFamily(Font(R.font.wick))
