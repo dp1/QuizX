@@ -73,7 +73,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     fun register() {
         if (!registerMode.value) {
-            enterRegisterMode()
+            registerMode.value = true
             return
         }
         viewModelScope.launch {
@@ -103,10 +103,6 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         } else {
             loginFormState.value = LoginFormState(isDataValid = true)
         }
-    }
-
-    private fun enterRegisterMode() {
-        registerMode.value = true
     }
 
     private fun isEmailValid(email: String): Boolean {
