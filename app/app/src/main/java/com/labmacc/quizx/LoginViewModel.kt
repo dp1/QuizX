@@ -1,16 +1,12 @@
 package com.labmacc.quizx
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.labmacc.quizx.data.CloudFirestoreDataSource
-import com.labmacc.quizx.data.FirebaseAuthDataSource
 import com.labmacc.quizx.data.LoginRepository
 import kotlinx.coroutines.launch
 import com.labmacc.quizx.data.util.Result
@@ -42,12 +38,30 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     private val loginFormState = mutableStateOf(LoginFormState())
     val loginResult = mutableStateOf(LoginResult())
-    var registerMode = mutableStateOf(false)
+    val registerMode = mutableStateOf(false)
 
-    fun login(email: String, password: String) {
+    val email = mutableStateOf("")
+    val password = mutableStateOf("")
+    val name = mutableStateOf("")
+
+    fun emailChanged(value: String) {
+        email.value = value
+        loginDataChanged()
+    }
+
+    fun passwordChanged(value: String) {
+        password.value = value
+        loginDataChanged()
+    }
+
+    fun nameChanged(value: String) {
+        name.value = value
+        loginDataChanged()
+    }
+
+    fun login() {
         viewModelScope.launch {
-
-            val result = loginRepository.login(email, password)
+            val result = loginRepository.login(email.value, password.value)
             loginResult.value = LoginResult(attempted = true)
             if (result is Result.Success) {
                 loginResult.value = LoginResult(success = result.data, attempted = true)
@@ -57,35 +71,34 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
     }
 
-    fun register(email: String, password: String, name: String) {
-        Log.i("prova","chiamata effettuata!")
+    fun register() {
         if (!registerMode.value) {
             enterRegisterMode()
             return
         }
         viewModelScope.launch {
-            val result = loginRepository.register(email, password, name)
+            val result = loginRepository.register(email.value, password.value, name.value)
             loginResult.value = LoginResult(attempted = true)
-            Log.i("prova",email+password+name)
+            Log.i("prova", "$email $password $name")
 
             if (result is Result.Success) {
                 loginResult.value = LoginResult(success = result.data, attempted = true)
-                Log.i("prova","reg ok!")
+                Log.i("prova", "reg ok!")
 
             } else {
                 loginResult.value = LoginResult(error = R.string.register_failed, attempted = true)
-                Log.i("prova","reg ko!")
+                Log.i("prova", "reg ko!")
 
             }
         }
     }
 
-    fun loginDataChanged(email: String, password: String, name: String) {
-        if (!isEmailValid(email)) {
+    private fun loginDataChanged() {
+        if (!isEmailValid(email.value)) {
             loginFormState.value = LoginFormState(emailError = R.string.invalid_email)
-        } else if (!isPasswordValid(password)) {
+        } else if (!isPasswordValid(password.value)) {
             loginFormState.value = LoginFormState(passwordError = R.string.invalid_password)
-        } else if (registerMode.value && !isNameValid(name)) {
+        } else if (registerMode.value && !isNameValid(name.value)) {
             loginFormState.value = LoginFormState(nameError = R.string.invalid_name)
         } else {
             loginFormState.value = LoginFormState(isDataValid = true)
@@ -94,7 +107,6 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     private fun enterRegisterMode() {
         registerMode.value = true
-        //_registerMode.value = true
     }
 
     private fun isEmailValid(email: String): Boolean {
