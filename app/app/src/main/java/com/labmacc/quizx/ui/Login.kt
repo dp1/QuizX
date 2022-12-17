@@ -1,6 +1,5 @@
 package com.labmacc.quizx.ui
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,12 +44,12 @@ fun Login(
         )
         Text(text = "QUIZX", color = Color.White, fontFamily = hueca, fontSize = 70.sp)
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         Divider(color = Color.White, thickness = 2.dp)
         Spacer(modifier = Modifier.height(20.dp))
 
         TextField(
-            label = { Text(text = "Email") },
+            label = { Text(text = stringResource(R.string.prompt_email)) },
             value = vm.email.value,
             onValueChange = { vm.emailChanged(it) }
         )
@@ -57,7 +57,7 @@ fun Login(
         Spacer(modifier = Modifier.height(20.dp))
 
         TextField(
-            label = { Text(text = "Password") },
+            label = { Text(text = stringResource(R.string.prompt_password)) },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             value = vm.password.value,
@@ -67,7 +67,7 @@ fun Login(
         if (vm.registerMode.value) {
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
-                label = { Text(text = "Name") },
+                label = { Text(text = stringResource(R.string.prompt_name)) },
                 value = vm.name.value,
                 onValueChange = { vm.nameChanged(it) }
             )
@@ -78,14 +78,14 @@ fun Login(
         Column(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             if (!vm.registerMode.value) {
                 Button(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
+                    .fillMaxWidth()
+                    .height(50.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue),
                     shape = RoundedCornerShape(50.dp),
                     onClick = { vm.login() }
                 ) {
                     Text(
-                        text = "Login",
+                        text = stringResource(R.string.action_sign_in),
                         color = Color.White,
                         fontFamily = wick,
                         fontSize = 15.sp
@@ -96,14 +96,14 @@ fun Login(
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
+                .fillMaxWidth()
+                .height(50.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue),
                 shape = RoundedCornerShape(50.dp),
                 onClick = { vm.register() }
             ) {
                 Text(
-                    text = "REGISTER",
+                    text = stringResource(R.string.action_register),
                     color = Color.White,
                     fontFamily = wick,
                     fontSize = 15.sp
@@ -115,9 +115,10 @@ fun Login(
         Divider(color = Color.White, thickness = 2.dp)
 
         if (vm.loginResult.value.attempted) {
-            if (vm.loginResult.value.success == null) {
-                Text(text = "ERROR REGISTRATION")
-            } else {
+            vm.loginResult.value.error?.let {
+                Text(text = stringResource(it))
+            }
+            vm.loginResult.value.success?.let {
                 onComplete()
             }
         }
