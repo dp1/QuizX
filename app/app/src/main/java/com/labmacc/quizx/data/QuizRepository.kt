@@ -17,7 +17,6 @@ class QuizRepository(
     }
 
     suspend fun createQuiz(authorId: String, fileUri: Uri, answer: String): Result<Unit> {
-
         return when (val result = storageDataSource.uploadImage(fileUri)) {
             is Result.Success -> {
                 val photoUri = result.data
@@ -27,14 +26,5 @@ class QuizRepository(
                 Result.Error(result.exception)
             }
         }
-
-//        storageDataSource.uploadImage(fileUri, { uri ->
-//            Log.i("QuizR", "Uploaded image to $uri")
-//
-////            firestoreDataSource.createQuiz(authorId, uri, answer)
-//
-//        }, {
-//            Log.w("QuizR", "Failed to upload image")
-//        })
     }
 }
