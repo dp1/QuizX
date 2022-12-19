@@ -51,13 +51,21 @@ fun Ranking(vm: RankingViewModel) {
             itemsIndexed(users, key = { _, user -> user.uuid }) { i, user ->
                 RankingUser(i, user, currentUser)
             }
+            item {
+                Spacer(modifier = Modifier.height(10.dp))
+            }
         }
+
         if(count.value > 0){
-            Box(modifier = Modifier.background(colorResource(R.color.dark_sky)).fillMaxWidth()) {
+            Box(modifier = Modifier
+                .background(colorResource(R.color.dark_sky))
+                .fillMaxWidth()) {
                 Button(
                     onClick = { /**/ },
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.teal_700)),
-                    modifier = Modifier.align(alignment = Alignment.Center).padding(5.dp)
+                    modifier = Modifier
+                        .align(alignment = Alignment.Center)
+                        .padding(5.dp)
                 ) {
                     Text(
                         text = if (count.value == 1) "${count.value} CHALLENGE AVAILABLE" else "${count.value} CHALLENGES AVAILABLE" ,
@@ -67,7 +75,6 @@ fun Ranking(vm: RankingViewModel) {
             }
         }
     }
-
 }
 
 @Composable
