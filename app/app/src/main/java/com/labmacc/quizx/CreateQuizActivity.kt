@@ -125,7 +125,7 @@ class CreateQuizActivity : ComponentActivity() {
                         ) {
 
                             Text(
-                                "Quiz Created!",
+                                "QUIZ CREATED!",
                                 Modifier.padding(100.dp),
                                 textAlign = TextAlign.Center,
                                 fontFamily = hueca,
@@ -137,7 +137,6 @@ class CreateQuizActivity : ComponentActivity() {
                 }
                 else {
                     val answer = remember { mutableStateOf("") }
-
                     ImageView(
                         photoUri = photoUri,
                         onSubmit = {
