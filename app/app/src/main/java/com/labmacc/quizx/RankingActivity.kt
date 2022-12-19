@@ -112,18 +112,16 @@ class RankingActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = Color.White
+            val navController = rememberNavController()
+            NavHost(
+                navController = navController,
+                startDestination = NavRoutes.Splash.route
             ) {
-                val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "Splash") {
-                    composable(route = "Splash") {
-                        SplashScreen(navController = navController)
-                    }
-                    composable(route = "Ranking") {
-                        Ranking(vm)
-                    }
+                composable(route = NavRoutes.Splash.route) {
+                    SplashScreen(navController = navController)
+                }
+                composable(route = NavRoutes.Home.route) {
+                    Ranking(vm)
                 }
             }
         }

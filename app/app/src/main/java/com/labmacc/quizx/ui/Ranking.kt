@@ -44,13 +44,13 @@ fun Ranking(vm: RankingViewModel) {
 
 @Composable
 fun RankingUser(idx: Int, user: User, currentUser: User?) {
-    val background = if (currentUser?.uuid == user.uuid) Color.Green else Color.LightGray
+    val background = if (currentUser?.uuid == user.uuid) colorResource(R.color.teal_700) else colorResource(R.color.blue)
 
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 0.dp)
         .clip(RoundedCornerShape(10.dp))
-        .background(colorResource(R.color.blue))
+        .background(background)
         .padding(16.dp)
     ) {
         Text(

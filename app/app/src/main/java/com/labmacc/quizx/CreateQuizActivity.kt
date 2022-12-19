@@ -5,24 +5,43 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.animation.OvershootInterpolator
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.labmacc.quizx.ui.CameraView
-import com.labmacc.quizx.ui.ImageView
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.labmacc.quizx.ui.*
+import com.labmacc.quizx.ui.theme.hueca
+import kotlinx.coroutines.delay
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CreateQuizActivity : ComponentActivity() {
-    companion object { const val TAG = "CreateQuizA" }
 
+    companion object { const val TAG = "CreateQuizA" }
     private val vm: CreateQuizViewModel by viewModels { CreateQuizViewModel.Factory }
 
     private var shouldShowCamera = mutableStateOf(false)
@@ -86,18 +105,50 @@ class CreateQuizActivity : ComponentActivity() {
             if (shouldShowCamera.value) {
                 CameraView(onCapture = ::takePhoto)
             } else if (shouldShowPhoto.value) {
-                val answer = remember { mutableStateOf("") }
+                if (vm.uploadState.value == UploadState.Complete) {
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                            .background(colorResource(R.color.skyblue))
+                    ) {
 
-                ImageView(
-                    photoUri = photoUri,
-                    onSubmit = {
-                        val authorId = vm.currentUser().value?.uuid ?: "Author"
-                        vm.createQuiz(authorId, photoUri, answer.value)
-                    },
-                    answer = answer.value,
-                    onAnswerChanged = { answer.value = it },
-                    uploadState = vm.uploadState.value
-                )
+                        LaunchedEffect(key1 = true) {
+                            delay(1000)
+                            finish()
+                        }
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color = Color.Blue)
+                        ) {
+
+                            Text(
+                                "Quiz Created!",
+                                Modifier.padding(100.dp),
+                                textAlign = TextAlign.Center,
+                                fontFamily = hueca,
+                                color = Color.White,
+                                fontSize = 60.sp
+                            )
+                        }
+                    }
+                }
+                else {
+                    val answer = remember { mutableStateOf("") }
+
+                    ImageView(
+                        photoUri = photoUri,
+                        onSubmit = {
+                            val authorId = vm.currentUser().value?.uuid ?: "Author"
+                            vm.createQuiz(authorId, photoUri, answer.value)
+                        },
+                        answer = answer.value,
+                        onAnswerChanged = { answer.value = it },
+                        uploadState = vm.uploadState.value
+                    )
+                }
             }
         }
 
