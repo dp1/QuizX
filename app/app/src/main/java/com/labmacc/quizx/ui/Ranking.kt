@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.labmacc.quizx.R
 import com.labmacc.quizx.RankingViewModel
 import com.labmacc.quizx.data.LoginRepository
+import com.labmacc.quizx.data.QuizRepository
 import com.labmacc.quizx.data.RankingRepository
 import com.labmacc.quizx.data.model.User
 import com.labmacc.quizx.ui.theme.hueca
@@ -36,7 +37,6 @@ import com.labmacc.quizx.ui.theme.wick
 fun Ranking(vm: RankingViewModel) {
     val users = vm.ranking
     val (currentUser, _) = remember { vm.currentUser() }
-    var count = remember { mutableStateOf( 0) }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -56,7 +56,8 @@ fun Ranking(vm: RankingViewModel) {
             }
         }
 
-        if(count.value > 0){
+        val pending = vm.numPendingChallenges.value
+        if(pending > 0){
             Box(modifier = Modifier
                 .background(colorResource(R.color.dark_sky))
                 .fillMaxWidth()) {
@@ -68,7 +69,7 @@ fun Ranking(vm: RankingViewModel) {
                         .padding(5.dp)
                 ) {
                     Text(
-                        text = if (count.value == 1) "${count.value} CHALLENGE AVAILABLE" else "${count.value} CHALLENGES AVAILABLE" ,
+                        text = if (pending == 1) "$pending CHALLENGE AVAILABLE" else "$pending CHALLENGES AVAILABLE" ,
                         color = Color.White
                     )
                 }
@@ -115,5 +116,5 @@ fun RankingUser(idx: Int, user: User, currentUser: User?) {
 @Preview
 @Composable
 fun PreviewRanking() {
-    Ranking(RankingViewModel(RankingRepository.instance, LoginRepository.instance))
+    Ranking(RankingViewModel(RankingRepository.instance, LoginRepository.instance, QuizRepository.instance))
 }

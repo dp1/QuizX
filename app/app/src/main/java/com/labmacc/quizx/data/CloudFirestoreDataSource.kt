@@ -61,4 +61,17 @@ class CloudFirestoreDataSource {
             }
         }
     }
+
+    fun listenForPendingChallenges(uuid: String, listener: (List<String>) -> Unit) {
+        db.collection("users").whereEqualTo("uuid", uuid).addSnapshotListener { value, error ->
+            if (error != null) {
+                Log.w(TAG, "Listen failed", error)
+            } else {
+                val user = value!!.documents[0].toObject<User>()
+                user?.let {
+                    listener(it.pendingChallenges)
+                }
+            }
+        }
+    }
 }
