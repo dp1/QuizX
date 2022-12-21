@@ -5,5 +5,4 @@ sealed class NavRoutes(val route: String) {
     object Home : NavRoutes("Ranking")
     object Login : NavRoutes("Login")
     object ShowQuiz : NavRoutes("ShowQuiz")
-
 }
