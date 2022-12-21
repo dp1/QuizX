@@ -122,12 +122,13 @@ class RankingActivity : ComponentActivity() {
                     SplashScreen(navController = navController)
                 }
                 composable(route = NavRoutes.Home.route) {
-                    Ranking(vm,navController)
+                    Ranking(vm, doLogin = {
+                        navController.navigate(NavRoutes.Login.route)
+                    })
                 }
                 composable(route = NavRoutes.Login.route) {
                     Login(vm.loginViewModel, onComplete = {
-                        navController.navigate(NavRoutes.Home.route) {
-                        }
+                        navController.navigate(NavRoutes.Home.route)
                     })
                 }
             }

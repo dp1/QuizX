@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -123,11 +124,14 @@ fun Login(
         Spacer(modifier = Modifier.height(25.dp))
         Divider(color = Color.White, thickness = 2.dp)
 
-        if (vm.loginResult.value.attempted) {
-            vm.loginResult.value.error?.let {
-                Text(text = stringResource(it))
-            }
-            vm.loginResult.value.success?.let {
+        val loginResult = vm.loginResult.value
+
+        loginResult.error?.let {
+            Text(text = stringResource(it))
+        }
+
+        loginResult.success?.let {
+            LaunchedEffect(loginResult) {
                 onComplete()
             }
         }
