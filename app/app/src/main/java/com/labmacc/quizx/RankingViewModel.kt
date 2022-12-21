@@ -40,8 +40,9 @@ class RankingViewModel(
             ranking.clear()
             ranking.addAll(it)
         }
+    }
 
-
+    fun onLoggedIn() {
         loginRepository.user.value?.let { user ->
             quizRepository.listenForPendingChallenges(user.uuid) {
                 numPendingChallenges.value = it.size

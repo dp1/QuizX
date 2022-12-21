@@ -128,6 +128,7 @@ class RankingActivity : ComponentActivity() {
                 }
                 composable(route = NavRoutes.Login.route) {
                     Login(vm.loginViewModel, onComplete = {
+                        vm.onLoggedIn()
                         navController.navigate(NavRoutes.Home.route)
                     })
                 }
