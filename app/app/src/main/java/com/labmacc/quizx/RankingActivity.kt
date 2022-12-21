@@ -21,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.labmacc.quizx.ui.Login
+import com.labmacc.quizx.ui.ShowQuiz
 import com.labmacc.quizx.ui.SplashScreen
 
 class ShakeListener(val triggerDelayMs: Long, val onTrigger: () -> Unit) : SensorEventListener {
@@ -124,6 +125,9 @@ class RankingActivity : ComponentActivity() {
                 composable(route = NavRoutes.Home.route) {
                     Ranking(vm, doLogin = {
                         navController.navigate(NavRoutes.Login.route)
+                    },
+                    showChallenge = { quizid ->
+                        navController.navigate(NavRoutes.ShowQuiz.route)
                     })
                 }
                 composable(route = NavRoutes.Login.route) {
@@ -131,6 +135,9 @@ class RankingActivity : ComponentActivity() {
                         vm.onLoggedIn()
                         navController.navigate(NavRoutes.Home.route)
                     })
+                }
+                composable(route = NavRoutes.ShowQuiz.route){
+                    ShowQuiz()
                 }
             }
         }

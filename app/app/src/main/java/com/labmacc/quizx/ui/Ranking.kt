@@ -1,5 +1,6 @@
 package com.labmacc.quizx.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -40,7 +41,8 @@ import com.labmacc.quizx.ui.theme.wick
 @Composable
 fun Ranking(
     vm: RankingViewModel,
-    doLogin: () -> Unit = { }
+    doLogin: () -> Unit = { },
+    showChallenge: (String) -> Unit = {}
 ) {
     val users = vm.ranking
     val (currentUser, _) = remember { vm.currentUser() }
@@ -48,7 +50,6 @@ fun Ranking(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-
         LazyColumn(
             modifier = Modifier
                 .background(colorResource(R.color.skyblue))
@@ -62,14 +63,15 @@ fun Ranking(
                 Spacer(modifier = Modifier.height(10.dp))
             }
         }
-
         val pending = vm.numPendingChallenges.value
         Box(modifier = Modifier
             .background(colorResource(R.color.dark_sky))
             .fillMaxWidth()) {
             if(pending > 0){
                 Button(
-                    onClick = { /**/ },
+                    onClick = {
+                              showChallenge(vm.nextPendingChallenge.value)
+                    },
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.teal_700)),
                     modifier = Modifier
                         .align(alignment = Alignment.Center)
