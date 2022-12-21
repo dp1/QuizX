@@ -75,7 +75,7 @@ class ShakeListener(val triggerDelayMs: Long, val onTrigger: () -> Unit) : Senso
                 val acceleration = sqrt(x * x + y * y + z * z)
                 filteredAcceleration = filteredAcceleration * (1f - alpha) + acceleration * alpha
 
-                Log.d(TAG, "accel $acceleration filtered $filteredAcceleration")
+//                Log.d(TAG, "accel $acceleration filtered $filteredAcceleration")
 
                 if (filteredAcceleration >= threshold) {
                     val currentTime = System.currentTimeMillis()
@@ -122,7 +122,8 @@ class RankingActivity : ComponentActivity() {
                     Ranking(vm, doLogin = {
                         navController.navigate(NavRoutes.Login.route)
                     },
-                    showChallenge = { quizid ->
+                    showChallenge = { quizId ->
+                        vm.showQuizViewModel.loadQuiz(quizId)
                         navController.navigate(NavRoutes.ShowQuiz.route)
                     })
                 }
@@ -132,8 +133,8 @@ class RankingActivity : ComponentActivity() {
                         navController.navigate(NavRoutes.Home.route)
                     })
                 }
-                composable(route = NavRoutes.ShowQuiz.route){
-                    ShowQuiz()
+                composable(route = NavRoutes.ShowQuiz.route) {
+                    ShowQuiz(vm.showQuizViewModel.quiz.value)
                 }
             }
         }

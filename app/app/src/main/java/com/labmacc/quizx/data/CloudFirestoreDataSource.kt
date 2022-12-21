@@ -48,6 +48,15 @@ class CloudFirestoreDataSource {
         }
     }
 
+    suspend fun getQuiz(uuid: String): Result<Quiz> {
+        val res = db.collection("quizzes").document(uuid).get().await()
+        val quiz = res.toObject<Quiz>()
+
+        return quiz?.let {
+            Result.Success(quiz)
+        } ?: Result.Error(IOException("Retrieved quiz is null"))
+    }
+
     fun listenForRatingChanges(listener: (List<User>) -> Unit) {
         db.collection("users").orderBy("score", Query.Direction.DESCENDING).addSnapshotListener { value, error ->
             if (error != null) {

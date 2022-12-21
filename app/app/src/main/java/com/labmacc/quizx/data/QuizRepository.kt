@@ -1,6 +1,7 @@
 package com.labmacc.quizx.data
 
 import android.net.Uri
+import com.labmacc.quizx.data.model.Quiz
 import com.labmacc.quizx.data.model.User
 import com.labmacc.quizx.data.util.Result
 
@@ -27,6 +28,10 @@ class QuizRepository(
                 Result.Error(result.exception)
             }
         }
+    }
+
+    suspend fun getQuiz(uuid: String): Result<Quiz> {
+        return firestoreDataSource.getQuiz(uuid)
     }
 
     fun listenForPendingChallenges(uuid: String, listener: (List<String>) -> Unit) {

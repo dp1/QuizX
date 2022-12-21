@@ -129,5 +129,5 @@ fun RankingUser(idx: Int, user: User, currentUser: User?) {
 @Preview
 @Composable
 fun PreviewRanking() {
-    Ranking(RankingViewModel(RankingRepository.instance, LoginRepository.instance, QuizRepository.instance, LoginViewModel(LoginRepository.instance)))
+    Ranking(RankingViewModel(RankingRepository.instance, LoginRepository.instance, QuizRepository.instance))
 }

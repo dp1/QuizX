@@ -15,8 +15,7 @@ import com.labmacc.quizx.data.model.User
 class RankingViewModel(
     private val rankingRepository: RankingRepository,
     private val loginRepository: LoginRepository,
-    private val quizRepository: QuizRepository,
-    val loginViewModel: LoginViewModel
+    private val quizRepository: QuizRepository
     ) : ViewModel() {
     companion object {
         val Factory = viewModelFactory {
@@ -24,12 +23,14 @@ class RankingViewModel(
                 RankingViewModel(
                     RankingRepository.instance,
                     LoginRepository.instance,
-                    QuizRepository.instance,
-                    LoginViewModel(LoginRepository.instance)
+                    QuizRepository.instance
                 )
             }
         }
     }
+
+    val loginViewModel = LoginViewModel(loginRepository)
+    val showQuizViewModel = ShowQuizViewModel(quizRepository)
 
     val ranking = mutableStateListOf<User>()
     val numPendingChallenges = mutableStateOf(0)
