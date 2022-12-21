@@ -24,6 +24,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.labmacc.quizx.LoginViewModel
+import com.labmacc.quizx.NavRoutes
 import com.labmacc.quizx.R
 import com.labmacc.quizx.RankingViewModel
 import com.labmacc.quizx.data.LoginRepository
@@ -34,7 +38,7 @@ import com.labmacc.quizx.ui.theme.hueca
 import com.labmacc.quizx.ui.theme.wick
 
 @Composable
-fun Ranking(vm: RankingViewModel) {
+fun Ranking(vm: RankingViewModel , navController : NavController) {
     val users = vm.ranking
     val (currentUser, _) = remember { vm.currentUser() }
 
@@ -57,23 +61,40 @@ fun Ranking(vm: RankingViewModel) {
         }
 
         val pending = vm.numPendingChallenges.value
-        if(pending > 0){
             Box(modifier = Modifier
                 .background(colorResource(R.color.dark_sky))
                 .fillMaxWidth()) {
-                Button(
-                    onClick = { /**/ },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.teal_700)),
-                    modifier = Modifier
-                        .align(alignment = Alignment.Center)
-                        .padding(5.dp)
-                ) {
-                    Text(
-                        text = if (pending == 1) "$pending CHALLENGE AVAILABLE" else "$pending CHALLENGES AVAILABLE" ,
-                        color = Color.White
-                    )
+                if(pending > 0){
+                    Button(
+                        onClick = { /**/ },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.teal_700)),
+                        modifier = Modifier
+                            .align(alignment = Alignment.Center)
+                            .padding(5.dp)
+                    ){
+                        Text(
+                            text = if (pending == 1) "$pending CHALLENGE AVAILABLE" else "$pending CHALLENGES AVAILABLE" ,
+                            color = Color.White
+                        )
+                    }
+                }else{
+                    Button(
+                        onClick = { navController.navigate(NavRoutes.Login.route) {
+                                    }
+                                  },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.teal_700)),
+                        modifier = Modifier
+                            .align(alignment = Alignment.Center)
+                            .padding(5.dp)
+                    ) {
+                        Text(
+                            text = "LOGIN",
+                            color = Color.White,
+                            fontFamily = wick
+                        )
+                    }
+
                 }
-            }
         }
     }
 }
@@ -116,5 +137,5 @@ fun RankingUser(idx: Int, user: User, currentUser: User?) {
 @Preview
 @Composable
 fun PreviewRanking() {
-    Ranking(RankingViewModel(RankingRepository.instance, LoginRepository.instance, QuizRepository.instance))
+    Ranking(RankingViewModel(RankingRepository.instance, LoginRepository.instance, QuizRepository.instance, LoginViewModel(LoginRepository.instance) ), rememberNavController())
 }

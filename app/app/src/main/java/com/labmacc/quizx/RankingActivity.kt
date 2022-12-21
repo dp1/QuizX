@@ -20,6 +20,7 @@ import kotlin.math.sqrt
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.labmacc.quizx.ui.Login
 import com.labmacc.quizx.ui.SplashScreen
 
 class ShakeListener(val triggerDelayMs: Long, val onTrigger: () -> Unit) : SensorEventListener {
@@ -121,7 +122,13 @@ class RankingActivity : ComponentActivity() {
                     SplashScreen(navController = navController)
                 }
                 composable(route = NavRoutes.Home.route) {
-                    Ranking(vm)
+                    Ranking(vm,navController)
+                }
+                composable(route = NavRoutes.Login.route) {
+                    Login(vm.loginViewModel, onComplete = {
+                        navController.navigate(NavRoutes.Home.route) {
+                        }
+                    })
                 }
             }
         }

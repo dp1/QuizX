@@ -45,7 +45,6 @@ fun SplashScreen(navController: NavController) = Box(
             //popUpTo("Splash") {
              //   inclusive = true
             popUpTo(0)
-
         }
     }
 

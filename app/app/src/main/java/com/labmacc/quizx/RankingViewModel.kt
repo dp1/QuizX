@@ -15,7 +15,8 @@ import com.labmacc.quizx.data.model.User
 class RankingViewModel(
     private val rankingRepository: RankingRepository,
     private val loginRepository: LoginRepository,
-    private val quizRepository: QuizRepository
+    private val quizRepository: QuizRepository,
+    val loginViewModel: LoginViewModel
     ) : ViewModel() {
     companion object {
         val Factory = viewModelFactory {
@@ -23,7 +24,8 @@ class RankingViewModel(
                 RankingViewModel(
                     RankingRepository.instance,
                     LoginRepository.instance,
-                    QuizRepository.instance
+                    QuizRepository.instance,
+                    LoginViewModel(LoginRepository.instance)
                 )
             }
         }
