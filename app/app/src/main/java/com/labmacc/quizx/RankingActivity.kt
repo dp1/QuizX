@@ -136,7 +136,9 @@ class RankingActivity : ComponentActivity() {
                     Login(vm.loginViewModel, onComplete = {
                         vm.onLoggedIn()
                         navController.navigate(NavRoutes.Ranking.route) {
-                            popUpTo(NavRoutes.Ranking.route)
+                            popUpTo(NavRoutes.Ranking.route) {
+                                inclusive = true
+                            }
                         }
                     })
                 }
