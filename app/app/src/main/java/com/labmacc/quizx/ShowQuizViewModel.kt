@@ -28,11 +28,14 @@ class ShowQuizViewModel(private val quizRepository: QuizRepository) : ViewModel(
     val quiz = mutableStateOf(Quiz())
 
     fun loadQuiz(uuid: String) {
+        Log.i(TAG, "Requesting quiz $uuid")
         viewModelScope.launch {
             val res = quizRepository.getQuiz(uuid)
             if (res is Result.Success) {
                 quiz.value = res.data
-
+                Log.i(TAG, "Received quiz. VM ${System.identityHashCode(this)} Quiz $quiz")
+            } else if (res is Result.Error){
+                Log.w(TAG, "Failed to receive quiz. ${res.exception}")
             }
         }
     }
