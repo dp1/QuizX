@@ -19,9 +19,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
 /*
- * There is some sort of inconsistency in how the standard Text composable works when
- * invoked within the compose navigation system, which causes Text not to update if its
- * contents change.
+ * There seems to be some sort of inconsistency, possibly in how the Text composable interacts
+ * with the navigation system, which causes Text not to update if its contents change.
  *
  * Since adding padding seems to force a recomposition, we wrap Text as a composable that
  * sets a monotonically increasing, but exceedingly tiny, padding every time the Text is
