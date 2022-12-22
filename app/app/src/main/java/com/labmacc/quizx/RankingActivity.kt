@@ -116,7 +116,11 @@ class RankingActivity : ComponentActivity() {
                 startDestination = NavRoutes.Splash.route
             ) {
                 composable(route = NavRoutes.Splash.route) {
-                    SplashScreen(navController = navController)
+                    SplashScreen(onFinish = {
+                        navController.navigate(NavRoutes.Home.route) {
+                            popUpTo(0)
+                        }
+                    })
                 }
                 composable(route = NavRoutes.Home.route) {
                     Ranking(vm, doLogin = {
@@ -130,7 +134,9 @@ class RankingActivity : ComponentActivity() {
                 composable(route = NavRoutes.Login.route) {
                     Login(vm.loginViewModel, onComplete = {
                         vm.onLoggedIn()
-                        navController.navigate(NavRoutes.Home.route)
+                        navController.navigate(NavRoutes.Home.route) {
+                            popUpTo(NavRoutes.Home.route)
+                        }
                     })
                 }
                 composable(route = NavRoutes.ShowQuiz.route) {

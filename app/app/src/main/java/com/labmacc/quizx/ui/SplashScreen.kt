@@ -16,13 +16,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.labmacc.quizx.R
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavController) = Box(
+fun SplashScreen(
+    onFinish: () -> Unit = { }
+) = Box(
     Modifier
         .fillMaxWidth()
         .fillMaxHeight()
@@ -41,11 +41,7 @@ fun SplashScreen(navController: NavController) = Box(
             })
         )
         delay(1000)
-        navController.navigate("Ranking") {
-            //popUpTo("Splash") {
-             //   inclusive = true
-            popUpTo(0)
-        }
+        onFinish()
     }
 
     Image(
@@ -63,5 +59,5 @@ fun SplashScreen(navController: NavController) = Box(
 @Preview(showBackground = true)
 @Composable
 fun SplashScreenPreview() {
-    SplashScreen(navController = rememberNavController())
+    SplashScreen()
 }
