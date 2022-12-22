@@ -69,7 +69,7 @@ def on_snapshot(doc_snapshot, changes, read_time):
         if change.type.name == 'ADDED':
             on_new_quiz(change.document.id, change.document)
 
-quizzes_ref.on_snapshot(on_snapshot)
+quizzes_ref.where('sentToUsers', '==', False).on_snapshot(on_snapshot)
 
 
 import time
