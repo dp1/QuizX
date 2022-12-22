@@ -21,7 +21,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    onFinish: () -> Unit = { }
+    onComplete: () -> Unit = { }
 ) = Box(
     Modifier
         .fillMaxWidth()
@@ -41,7 +41,7 @@ fun SplashScreen(
             })
         )
         delay(1000)
-        onFinish()
+        onComplete()
     }
 
     Image(

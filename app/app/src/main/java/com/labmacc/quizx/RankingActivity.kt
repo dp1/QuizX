@@ -100,9 +100,10 @@ class RankingActivity : ComponentActivity() {
 
     private val vm: RankingViewModel by viewModels { RankingViewModel.Factory }
 
+    private var currentDestination = ""
     private lateinit var sensorManager: SensorManager
     private val shakeListener = ShakeListener(2_000) {
-        if (vm.currentUser().value != null) {
+        if (currentDestination == NavRoutes.Ranking.route && vm.currentUser().value != null) {
             startActivity(Intent(this, CreateQuizActivity::class.java))
         }
     }
@@ -116,7 +117,7 @@ class RankingActivity : ComponentActivity() {
                 startDestination = NavRoutes.Splash.route
             ) {
                 composable(route = NavRoutes.Splash.route) {
-                    SplashScreen(onFinish = {
+                    SplashScreen(onComplete = {
                         navController.navigate(NavRoutes.Ranking.route) {
                             popUpTo(0)
                         }
@@ -141,6 +142,12 @@ class RankingActivity : ComponentActivity() {
                 }
                 composable(route = NavRoutes.ShowQuiz.route) {
                     ShowQuiz(vm.showQuizViewModel.quiz.value)
+                }
+            }
+
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                destination.route?.let {
+                    currentDestination = it
                 }
             }
         }
