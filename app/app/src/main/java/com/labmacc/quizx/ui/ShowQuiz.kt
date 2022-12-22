@@ -1,6 +1,7 @@
 package com.labmacc.quizx.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import com.labmacc.quizx.data.model.Quiz
 
