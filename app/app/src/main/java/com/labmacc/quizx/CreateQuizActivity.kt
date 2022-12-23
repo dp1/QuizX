@@ -87,7 +87,6 @@ class CreateQuizActivity : ComponentActivity() {
                 override fun onError(exception: ImageCaptureException) {
                     Log.e(TAG, "Take photo error:", exception)
                 }
-
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val uri = Uri.fromFile(photoFile)
                     Log.i(TAG, "Image captured: $uri")
