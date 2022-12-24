@@ -34,6 +34,11 @@ class QuizRepository(
         return firestoreDataSource.getQuiz(uuid)
     }
 
+    suspend fun getAuthor(authorid : String) : Result<User>{
+        return firestoreDataSource.getUser(authorid)
+
+    }
+
     fun listenForPendingChallenges(uuid: String, listener: (List<String>) -> Unit) {
         firestoreDataSource.listenForPendingChallenges(uuid, listener)
     }

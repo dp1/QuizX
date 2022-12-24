@@ -143,7 +143,7 @@ class RankingActivity : ComponentActivity() {
                     })
                 }
                 composable(route = NavRoutes.ShowQuiz.route) {
-                    ShowQuiz(vm.showQuizViewModel.quiz.value)
+                    ShowQuiz(vm.showQuizViewModel.quiz.value,vm.showQuizViewModel.author.value)
                 }
             }
 
