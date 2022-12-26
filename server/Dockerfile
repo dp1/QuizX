@@ -1,6 +1,13 @@
 FROM python:3.10-alpine
 
-WORKDIR /srv
+RUN addgroup quizx && \
+    adduser -G quizx --shell /bin/false --disabled-password quizx && \
+    mkdir -p /srv/quizx && \
+    chown quizx:quizx /srv/quizx
+
+USER quizx
+
+WORKDIR /srv/quizx
 COPY requirements.txt .
 COPY server.py .
 

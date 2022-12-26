@@ -6,4 +6,4 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./animalx-1-firebase.json:/srv/animalx-1-firebase.json:ro
+      - ./animalx-1-firebase.json:/srv/quizx/animalx-1-firebase.json:ro
