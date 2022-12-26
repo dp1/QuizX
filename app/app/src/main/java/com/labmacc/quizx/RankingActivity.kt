@@ -127,10 +127,10 @@ class RankingActivity : ComponentActivity() {
                     Ranking(vm, doLogin = {
                         navController.navigate(NavRoutes.Login.route)
                     },
-                    showChallenge = { quizId ->
-                        vm.showQuizViewModel.loadQuiz(quizId)
-                        navController.navigate(NavRoutes.ShowQuiz.route)
-                    })
+                        showChallenge = { quizId ->
+                            vm.showQuizViewModel.loadQuiz(quizId)
+                            navController.navigate(NavRoutes.ShowQuiz.route)
+                        })
                 }
                 composable(route = NavRoutes.Login.route) {
                     Login(vm.loginViewModel, onComplete = {
@@ -143,7 +143,14 @@ class RankingActivity : ComponentActivity() {
                     })
                 }
                 composable(route = NavRoutes.ShowQuiz.route) {
-                    ShowQuiz(vm.showQuizViewModel.quiz.value,vm.showQuizViewModel.author.value)
+                    vm.currentUser().value?.let { user ->
+                        ShowQuiz(
+                            user,
+                            vm.showQuizViewModel,
+                            vm.showQuizViewModel.quiz.value,
+                            vm.showQuizViewModel.author.value
+                        )
+                    }
                 }
             }
 

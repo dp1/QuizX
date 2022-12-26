@@ -30,7 +30,7 @@ class RankingViewModel(
     }
 
     val loginViewModel = LoginViewModel(loginRepository)
-    val showQuizViewModel = ShowQuizViewModel(quizRepository)
+    val showQuizViewModel = ShowQuizViewModel(quizRepository,loginRepository)
 
     val ranking = mutableStateListOf<User>()
     val numPendingChallenges = mutableStateOf(0)

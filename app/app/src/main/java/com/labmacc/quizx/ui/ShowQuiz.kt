@@ -1,16 +1,17 @@
 package com.labmacc.quizx.ui
 
-import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,25 +21,21 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
-import com.labmacc.quizx.CreateQuizViewModel
 import com.labmacc.quizx.R
-import com.labmacc.quizx.RankingViewModel
-import com.labmacc.quizx.ShowQuizViewModel
-import com.labmacc.quizx.data.LoginRepository
-import com.labmacc.quizx.data.QuizRepository
-import com.labmacc.quizx.data.RankingRepository
 import com.labmacc.quizx.data.model.Quiz
 import com.labmacc.quizx.data.model.User
-import com.labmacc.quizx.ui.theme.hueca
 import com.labmacc.quizx.ui.theme.wick
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import com.labmacc.quizx.ShowQuizViewModel
 
 @Composable
-fun ShowQuiz(quiz: Quiz, author : User) {
+fun ShowQuiz(
+    user: User, vm: ShowQuizViewModel, quiz: Quiz, author: User){
+    var answer by remember{ mutableStateOf("")}
     Box {
         Column(
             modifier = Modifier
@@ -91,8 +88,8 @@ fun ShowQuiz(quiz: Quiz, author : User) {
             ) {
 
                 TextField(
-                    value = "",
-                    onValueChange = { },
+                    value = answer,
+                    onValueChange = {answer = it },
                     label = { Text("Answer") },
                     singleLine = true,
                     textStyle = TextStyle(color = Color.Black, fontWeight = FontWeight.Bold),
@@ -100,7 +97,9 @@ fun ShowQuiz(quiz: Quiz, author : User) {
                 Spacer(Modifier.size(10.dp))
                 Button(
                     modifier = Modifier.wrapContentWidth(),
-                    onClick = {  },
+                    onClick = {
+                        vm.sendAnswer(user.uuid, quiz.uuid, answer)
+                    },
                     colors = ButtonDefaults.textButtonColors(
                         backgroundColor = Color.Blue,
                     )
@@ -113,7 +112,7 @@ fun ShowQuiz(quiz: Quiz, author : User) {
     }
 }
 
-
+/*
 @Preview
 @Composable
 fun PreviewShowQuiz() {
@@ -122,3 +121,4 @@ fun PreviewShowQuiz() {
         User()
     )
 }
+*/

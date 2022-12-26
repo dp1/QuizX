@@ -7,13 +7,15 @@ import com.labmacc.quizx.data.util.Result
 
 class QuizRepository(
     val firestoreDataSource: CloudFirestoreDataSource,
-    val storageDataSource: FirebaseStorageDataSource
+    val storageDataSource: FirebaseStorageDataSource,
+    val apiDataSource: ApiDataSource
 ) {
     companion object {
         val instance by lazy {
             QuizRepository(
                 CloudFirestoreDataSource(),
-                FirebaseStorageDataSource()
+                FirebaseStorageDataSource(),
+                ApiDataSource()
             )
         }
     }
@@ -42,4 +44,11 @@ class QuizRepository(
     fun listenForPendingChallenges(uuid: String, listener: (List<String>) -> Unit) {
         firestoreDataSource.listenForPendingChallenges(uuid, listener)
     }
+
+
+    fun sendAnswer(user_id : String, quiz_id : String, answer : String){
+        apiDataSource.sendAnswer(user_id, quiz_id, answer)
+
+    }
+
 }
