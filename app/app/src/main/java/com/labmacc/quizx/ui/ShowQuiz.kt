@@ -8,10 +8,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,38 +25,106 @@ import com.labmacc.quizx.R
 import com.labmacc.quizx.data.model.Quiz
 import com.labmacc.quizx.data.model.User
 import com.labmacc.quizx.ui.theme.wick
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import com.labmacc.quizx.ShowQuizViewModel
+import com.labmacc.quizx.ui.theme.hueca
+import kotlinx.coroutines.delay
 
 @Composable
 fun ShowQuiz(
-    user: User, vm: ShowQuizViewModel, quiz: Quiz, author: User){
+    user: User, vm: ShowQuizViewModel, quiz: Quiz, author: User,onComplete: () -> Unit = {}
+){
     var answer by remember{ mutableStateOf("")}
-    Box {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
+    if (vm.submissionResult.value != null){
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
                 .background(colorResource(R.color.skyblue))
         ) {
-            Image(
+            LaunchedEffect(key1 = true) {
+                delay(3000)
+                onComplete()
+            }
+            Column(
+                verticalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(10.dp))
                     .fillMaxSize()
-                    .background(Color.LightGray),
-                painter = rememberAsyncImagePainter(quiz.imageUri),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
-            )
-            Row(
+                    .background(color = Color.Blue)
+            ){
+                if(vm.submissionResult.value!!.result){
+                    Column(modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Text(
+                            "Correct response!",
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontFamily = hueca,
+                            color = Color.White,
+                            fontSize = 60.sp,
+                        )
+                        Text(
+                            "Points earned : ${vm.submissionResult.value!!.score_obtained}",
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontFamily = hueca,
+                            color = Color.White,
+                            fontSize = 60.sp
+                        )
+
+                    }
+                }
+                else {
+                    Column(modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Text(
+                            "Wrong response!",
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontFamily = hueca,
+                            color = Color.White,
+                            fontSize = 60.sp,
+                        )
+                        Text(
+                            "Points lost : ${vm.submissionResult.value!!.score_obtained}",
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontFamily = hueca,
+                            color = Color.White,
+                            fontSize = 60.sp
+                        )
+
+                    }
+                }
+                }
+            }
+        }
+    else {
+        Box {
+            Column(
                 modifier = Modifier
-                    .imePadding()
-                    .padding(10.dp)
-                    .wrapContentHeight()
-                    .fillMaxWidth(),
+                    .fillMaxSize()
+                    .background(colorResource(R.color.skyblue))
+            ) {
+                Image(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(10.dp))
+                        .fillMaxSize()
+                        .background(Color.LightGray),
+                    painter = rememberAsyncImagePainter(quiz.imageUri),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
+                Row(
+                    modifier = Modifier
+                        .imePadding()
+                        .padding(10.dp)
+                        .wrapContentHeight()
+                        .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     Text(
                         textAlign = TextAlign.Center,
                         text = "CREATED BY ",
@@ -67,7 +132,7 @@ fun ShowQuiz(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = wick
-                        )
+                    )
                     Spacer(Modifier.width(70.dp))
                     Text(
                         textAlign = TextAlign.Center,
@@ -76,37 +141,38 @@ fun ShowQuiz(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = wick
-                        )
-                }
-            Row(
-                modifier = Modifier
-                    .imePadding()
-                    .padding(10.dp)
-                    .wrapContentHeight()
-                    .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                TextField(
-                    value = answer,
-                    onValueChange = {answer = it },
-                    label = { Text("Answer") },
-                    singleLine = true,
-                    textStyle = TextStyle(color = Color.Black, fontWeight = FontWeight.Bold),
-                )
-                Spacer(Modifier.size(10.dp))
-                Button(
-                    modifier = Modifier.wrapContentWidth(),
-                    onClick = {
-                        vm.sendAnswer(user.uuid, quiz.uuid, answer)
-                    },
-                    colors = ButtonDefaults.textButtonColors(
-                        backgroundColor = Color.Blue,
                     )
-                ) {
-                    Text("SEND", color = Color.White)
                 }
+                Row(
+                    modifier = Modifier
+                        .imePadding()
+                        .padding(10.dp)
+                        .wrapContentHeight()
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
 
+                    TextField(
+                        value = answer,
+                        onValueChange = { answer = it },
+                        label = { Text("Answer") },
+                        singleLine = true,
+                        textStyle = TextStyle(color = Color.Black, fontWeight = FontWeight.Bold),
+                    )
+                    Spacer(Modifier.size(10.dp))
+                    Button(
+                        modifier = Modifier.wrapContentWidth(),
+                        onClick = {
+                            vm.sendAnswer(user.uuid, quiz.uuid, answer)
+                        },
+                        colors = ButtonDefaults.textButtonColors(
+                            backgroundColor = Color.Blue,
+                        )
+                    ) {
+                        Text("SEND", color = Color.White)
+                    }
+
+                }
             }
         }
     }

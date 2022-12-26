@@ -40,6 +40,7 @@ class ShowQuizViewModel(private val quizRepository: QuizRepository, private val 
     val quiz = mutableStateOf(Quiz())
     val author = mutableStateOf(User())
 
+
     fun loadQuiz(uuid: String) {
         Log.i(TAG, "Requesting quiz $uuid")
         viewModelScope.launch {
@@ -60,9 +61,15 @@ class ShowQuizViewModel(private val quizRepository: QuizRepository, private val 
         }
     }
 
+    val submissionResult = mutableStateOf<SubmissionResult?>(null)
+
     fun sendAnswer(user_id: String, quiz_id: String, answer: String) {
-        quizRepository.sendAnswer(user_id, quiz_id, answer)
+        quizRepository.sendAnswer(user_id, quiz_id, answer){
+                submissionResult.value = it
+        }
     }
+
+
 
 }
 

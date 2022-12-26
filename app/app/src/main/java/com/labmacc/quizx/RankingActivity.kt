@@ -148,7 +148,14 @@ class RankingActivity : ComponentActivity() {
                             user,
                             vm.showQuizViewModel,
                             vm.showQuizViewModel.quiz.value,
-                            vm.showQuizViewModel.author.value
+                            vm.showQuizViewModel.author.value,
+                            onComplete = {
+                                navController.navigate(NavRoutes.Ranking.route) {
+                                    popUpTo(NavRoutes.Ranking.route){
+                                        inclusive = true
+                                    }
+                                }
+                            }
                         )
                     }
                 }

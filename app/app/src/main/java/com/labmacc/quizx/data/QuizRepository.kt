@@ -2,6 +2,7 @@ package com.labmacc.quizx.data
 
 import android.net.Uri
 import com.labmacc.quizx.data.model.Quiz
+import com.labmacc.quizx.data.model.SubmissionResult
 import com.labmacc.quizx.data.model.User
 import com.labmacc.quizx.data.util.Result
 
@@ -46,8 +47,8 @@ class QuizRepository(
     }
 
 
-    fun sendAnswer(user_id : String, quiz_id : String, answer : String){
-        apiDataSource.sendAnswer(user_id, quiz_id, answer)
+    fun sendAnswer(user_id : String, quiz_id : String, answer : String, onSuccess : (SubmissionResult) -> Unit ){
+        apiDataSource.sendAnswer(user_id, quiz_id, answer, onSuccess)
 
     }
 
