@@ -1,5 +1,6 @@
 package com.labmacc.quizx
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
@@ -13,12 +14,21 @@ import com.labmacc.quizx.data.model.Quiz
 import com.labmacc.quizx.data.model.User
 import kotlinx.coroutines.launch
 import com.labmacc.quizx.data.util.Result
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.JsonRequest
+import com.android.volley.toolbox.Volley
+import com.labmacc.quizx.data.model.SubmissionResult
+import org.json.JSONArray
+import org.json.JSONObject
 
-class ShowQuizViewModel(private val quizRepository: QuizRepository) : ViewModel() {
+class ShowQuizViewModel(private val quizRepository: QuizRepository, private val loginRepository: LoginRepository) : ViewModel() {
     companion object {
         val Factory = viewModelFactory {
             initializer {
-                LoginViewModel(
+                ShowQuizViewModel(
+                    QuizRepository.instance,
                     LoginRepository.instance
                 )
             }
@@ -37,23 +47,22 @@ class ShowQuizViewModel(private val quizRepository: QuizRepository) : ViewModel(
             if (res is Result.Success) {
                 Log.i(TAG, "Received quiz.$quiz")
                 val res2 = quizRepository.getAuthor(res.data.authorId)
-                if (res2 is Result.Success){
+                if (res2 is Result.Success) {
                     quiz.value = res.data
                     author.value = res2.data
                     Log.i(TAG, "Received author $author")
-                }
-                else if (res2 is Result.Error){
+                } else if (res2 is Result.Error) {
                     Log.w(TAG, "Failed to receive author. ${res2.exception}")
                 }
-            }else if (res is Result.Error){
+            } else if (res is Result.Error) {
                 Log.w(TAG, "Failed to receive quiz. ${res.exception}")
             }
         }
     }
 
-
-
-
-
+    fun sendAnswer(user_id: String, quiz_id: String, answer: String) {
+        quizRepository.sendAnswer(user_id, quiz_id, answer)
+    }
 
 }
+
