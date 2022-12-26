@@ -71,7 +71,6 @@ fun ShowQuiz(
                             color = Color.White,
                             fontSize = 60.sp
                         )
-
                     }
                 }
                 else {
