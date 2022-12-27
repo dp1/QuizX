@@ -1,8 +1,6 @@
 package com.labmacc.quizx
 
-import android.content.Context
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
@@ -14,14 +12,7 @@ import com.labmacc.quizx.data.model.Quiz
 import com.labmacc.quizx.data.model.User
 import kotlinx.coroutines.launch
 import com.labmacc.quizx.data.util.Result
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.JsonRequest
-import com.android.volley.toolbox.Volley
 import com.labmacc.quizx.data.model.SubmissionResult
-import org.json.JSONArray
-import org.json.JSONObject
 
 class ShowQuizViewModel(private val quizRepository: QuizRepository, private val loginRepository: LoginRepository) : ViewModel() {
     companion object {
@@ -39,7 +30,6 @@ class ShowQuizViewModel(private val quizRepository: QuizRepository, private val 
 
     val quiz = mutableStateOf(Quiz())
     val author = mutableStateOf(User())
-
 
     fun loadQuiz(uuid: String) {
         Log.i(TAG, "Requesting quiz $uuid")
@@ -63,13 +53,13 @@ class ShowQuizViewModel(private val quizRepository: QuizRepository, private val 
 
     val submissionResult = mutableStateOf<SubmissionResult?>(null)
 
-    fun sendAnswer(user_id: String, quiz_id: String, answer: String) {
-        quizRepository.sendAnswer(user_id, quiz_id, answer){
-                submissionResult.value = it
-        }
+    fun resetAnswer() {
+        submissionResult.value = null
     }
 
-
-
+    fun sendAnswer(user_id: String, quiz_id: String, answer: String) {
+        quizRepository.sendAnswer(user_id, quiz_id, answer) {
+            submissionResult.value = it
+        }
+    }
 }
-

@@ -150,6 +150,7 @@ class RankingActivity : ComponentActivity() {
                             vm.showQuizViewModel.quiz.value,
                             vm.showQuizViewModel.author.value,
                             onComplete = {
+                                vm.showQuizViewModel.resetAnswer()
                                 navController.navigate(NavRoutes.Ranking.route) {
                                     popUpTo(NavRoutes.Ranking.route){
                                         inclusive = true
