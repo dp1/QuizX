@@ -1,11 +1,15 @@
 package com.labmacc.quizx
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.graphics.drawable.toBitmapOrNull
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import coil.imageLoader
+import coil.request.ImageRequest
 import com.labmacc.quizx.data.LoginRepository
 import com.labmacc.quizx.data.QuizRepository
 import com.labmacc.quizx.data.model.Quiz
@@ -30,6 +34,7 @@ class ShowQuizViewModel(private val quizRepository: QuizRepository, private val 
 
     val quiz = mutableStateOf(Quiz())
     val author = mutableStateOf(User())
+    val image = mutableStateOf<Bitmap?>(null)
 
     fun loadQuiz(uuid: String) {
         Log.i(TAG, "Requesting quiz $uuid")
@@ -42,6 +47,27 @@ class ShowQuizViewModel(private val quizRepository: QuizRepository, private val 
                     quiz.value = res.data
                     author.value = res2.data
                     Log.i(TAG, "Received author $author")
+
+                    QuizXApplication.instance.also { context ->
+                        val request = ImageRequest.Builder(context)
+                            .data(res.data.imageUri)
+                            .target(
+                                onStart = {
+                                    Log.i(TAG, "Image loading started")
+                                },
+                                onSuccess = {
+                                    Log.i(TAG, "Image loading completed")
+                                    image.value = it.toBitmapOrNull()
+                                },
+                                onError = {
+                                    Log.w(TAG, "Image loading failed")
+                                }
+                            )
+                            .build()
+
+                        context.imageLoader.execute(request)
+                    }
+
                 } else if (res2 is Result.Error) {
                     Log.w(TAG, "Failed to receive author. ${res2.exception}")
                 }

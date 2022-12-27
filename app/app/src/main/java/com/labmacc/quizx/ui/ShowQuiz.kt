@@ -1,9 +1,7 @@
 package com.labmacc.quizx.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -11,30 +9,33 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberAsyncImagePainter
+import androidx.compose.ui.viewinterop.AndroidView
 import com.labmacc.quizx.R
 import com.labmacc.quizx.data.model.Quiz
 import com.labmacc.quizx.data.model.User
 import com.labmacc.quizx.ui.theme.wick
 import com.labmacc.quizx.ShowQuizViewModel
 import com.labmacc.quizx.ui.theme.hueca
+import com.labmacc.quizx.ui.views.ScratchView
 import kotlinx.coroutines.delay
 
 @Composable
 fun ShowQuiz(
-    user: User, vm: ShowQuizViewModel, quiz: Quiz, author: User,onComplete: () -> Unit = {}
+    user: User,
+    vm: ShowQuizViewModel,
+    quiz: Quiz,
+    author: User,
+    onComplete: () -> Unit = {}
 ){
     var answer by remember{ mutableStateOf("")}
-    if (vm.submissionResult.value != null){
+    if (vm.submissionResult.value != null) {
         Box(
             Modifier
                 .fillMaxWidth()
@@ -51,7 +52,7 @@ fun ShowQuiz(
                     .fillMaxSize()
                     .background(color = Color.Blue)
             ){
-                if(vm.submissionResult.value!!.result){
+                if(vm.submissionResult.value!!.result) {
                     Column(modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
                     ) {
@@ -72,8 +73,7 @@ fun ShowQuiz(
                             fontSize = 60.sp
                         )
                     }
-                }
-                else {
+                } else {
                     Column(modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
                     ) {
@@ -93,28 +93,24 @@ fun ShowQuiz(
                             color = Color.White,
                             fontSize = 60.sp
                         )
-
                     }
-                }
                 }
             }
         }
-    else {
+    } else {
         Box {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(colorResource(R.color.skyblue))
             ) {
-                Image(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(RoundedCornerShape(10.dp))
-                        .fillMaxSize()
-                        .background(Color.LightGray),
-                    painter = rememberAsyncImagePainter(quiz.imageUri),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop
+                AndroidView(modifier = Modifier.weight(1f),
+                    factory = { context -> ScratchView(context) },
+                    update = { view ->
+                        vm.image.value?.let {
+                            view.setImage(it)
+                        }
+                    }
                 )
                 Row(
                     modifier = Modifier
