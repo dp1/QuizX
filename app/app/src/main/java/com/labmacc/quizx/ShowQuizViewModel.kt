@@ -35,9 +35,13 @@ class ShowQuizViewModel(private val quizRepository: QuizRepository, private val 
     val quiz = mutableStateOf(Quiz())
     val author = mutableStateOf(User())
     val image = mutableStateOf<Bitmap?>(null)
+    val loading = mutableStateOf(false)
+    val submissionResult = mutableStateOf<SubmissionResult?>(null)
+
 
     fun loadQuiz(uuid: String) {
         Log.i(TAG, "Requesting quiz $uuid")
+        loading.value = true
         viewModelScope.launch {
             val res = quizRepository.getQuiz(uuid)
             if (res is Result.Success) {
@@ -58,9 +62,11 @@ class ShowQuizViewModel(private val quizRepository: QuizRepository, private val 
                                 onSuccess = {
                                     Log.i(TAG, "Image loading completed")
                                     image.value = it.toBitmapOrNull()
+                                    loading.value = false
                                 },
                                 onError = {
                                     Log.w(TAG, "Image loading failed")
+                                    loading.value = false
                                 }
                             )
                             .build()
@@ -76,8 +82,6 @@ class ShowQuizViewModel(private val quizRepository: QuizRepository, private val 
             }
         }
     }
-
-    val submissionResult = mutableStateOf<SubmissionResult?>(null)
 
     fun resetAnswer() {
         submissionResult.value = null
