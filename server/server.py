@@ -124,6 +124,12 @@ class QuizHub(Resource):
             return 0
         return (wrong_subs - correct_subs) * SCORE_K / N
 
+    def sender_score(self, covered_area: float):
+        """
+        Give a minimum of 3 points, and linearly interpolate up to SCORE_K
+        """
+        return round(3 + covered_area * (SCORE_K - 3))
+
     def post(self):
         args = parser.parse_args()
         sender_id = args['sender_id']
@@ -160,10 +166,10 @@ class QuizHub(Resource):
 
         if correct:
             correct_subs += 1
-            sender_score_delta = SCORE_K
+            sender_score_delta = self.sender_score(covered_area)
         else:
             wrong_subs += 1
-            sender_score_delta = -SCORE_K
+            sender_score_delta = -self.sender_score(covered_area)
 
         author_score_after = self.author_score(correct_subs, wrong_subs)
 
