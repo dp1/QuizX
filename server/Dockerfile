@@ -8,10 +8,11 @@ RUN addgroup quizx && \
 USER quizx
 
 WORKDIR /srv/quizx
-COPY requirements.txt .
-COPY server.py .
 
+COPY requirements.txt .
 RUN pip install -r requirements.txt
+
+COPY server.py .
 
 EXPOSE 5000
 ENTRYPOINT [ "python3", "server.py", "./animalx-1-firebase.json" ]
