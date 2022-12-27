@@ -135,7 +135,13 @@ class QuizHub(Resource):
         sender_id = args['sender_id']
         quiz_id = args['quiz_id']
         answer = args['answer']
-        covered_area = args['covered_area']
+
+        try:
+            covered_area = float(args['covered_area'])
+        except Exception as e:
+            logging.warning(f'Failed to parse covered area', exc_info=True)
+            return {"success": False}
+
         logging.info(f'Received submission from {sender_id} on quiz {quiz_id} with answer {answer}, covered area {covered_area}')
 
         sender = users_ref.document(sender_id).get()
