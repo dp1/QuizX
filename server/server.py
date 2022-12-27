@@ -107,6 +107,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('sender_id', required=True)
 parser.add_argument('quiz_id', required=True)
 parser.add_argument('answer', required=True)
+parser.add_argument('covered_area', required=True)
 
 class QuizHub(Resource):
     def answers_equal(self, a: str, b: str):
@@ -128,7 +129,8 @@ class QuizHub(Resource):
         sender_id = args['sender_id']
         quiz_id = args['quiz_id']
         answer = args['answer']
-        logging.info(f'Received submission from {sender_id} on quiz {quiz_id} with answer {answer}')
+        covered_area = args['covered_area']
+        logging.info(f'Received submission from {sender_id} on quiz {quiz_id} with answer {answer}, covered area {covered_area}')
 
         sender = users_ref.document(sender_id).get()
         if not sender.exists:
