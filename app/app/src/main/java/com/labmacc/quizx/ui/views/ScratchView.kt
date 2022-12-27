@@ -32,6 +32,20 @@ class ScratchView(context: Context?) : View(context), View.OnTouchListener {
         bitmap = img
     }
 
+    fun coveredArea(): Float {
+        var coveredPixels = 0
+        for (x in 0 until buffer.width) {
+            for (y in 0 until buffer.height) {
+                val pixel = buffer.getPixel(x, y)
+                if (pixel == Color.GRAY) {
+                    coveredPixels += 1
+                }
+            }
+        }
+        val imageArea = buffer.width * buffer.height
+        return coveredPixels.toFloat() / imageArea
+    }
+
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 

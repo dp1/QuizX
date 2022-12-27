@@ -87,8 +87,8 @@ class ShowQuizViewModel(private val quizRepository: QuizRepository, private val 
         submissionResult.value = null
     }
 
-    fun sendAnswer(user_id: String, quiz_id: String, answer: String) {
-        quizRepository.sendAnswer(user_id, quiz_id, answer) {
+    fun sendAnswer(user_id: String, quiz_id: String, answer: String, coveredArea: Float) {
+        quizRepository.sendAnswer(user_id, quiz_id, answer, coveredArea) {
             submissionResult.value = it
         }
     }

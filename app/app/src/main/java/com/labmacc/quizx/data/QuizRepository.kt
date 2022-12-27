@@ -47,9 +47,7 @@ class QuizRepository(
     }
 
 
-    fun sendAnswer(user_id : String, quiz_id : String, answer : String, onSuccess : (SubmissionResult) -> Unit ){
-        apiDataSource.sendAnswer(user_id, quiz_id, answer, onSuccess)
-
+    fun sendAnswer(user_id: String, quiz_id: String, answer: String, coveredArea: Float, onSuccess: (SubmissionResult) -> Unit ){
+        apiDataSource.sendAnswer(user_id, quiz_id, answer, coveredArea, onSuccess)
     }
-
 }

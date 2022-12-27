@@ -102,8 +102,9 @@ fun ShowQuiz(
                     .fillMaxSize()
                     .background(colorResource(R.color.skyblue))
             ) {
+                var scratchView by remember { mutableStateOf<ScratchView?>(null) }
                 AndroidView(modifier = Modifier.weight(1f),
-                    factory = { context -> ScratchView(context) },
+                    factory = { context -> ScratchView(context).apply { scratchView = this } },
                     update = { view ->
                         vm.image.value?.let {
                             view.setImage(it)
@@ -144,7 +145,6 @@ fun ShowQuiz(
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ){
-
                     TextField(
                         value = answer,
                         onValueChange = { answer = it },
@@ -156,7 +156,8 @@ fun ShowQuiz(
                     Button(
                         modifier = Modifier.wrapContentWidth(),
                         onClick = {
-                            vm.sendAnswer(user.uuid, quiz.uuid, answer)
+                            val coveredArea = scratchView?.coveredArea() ?: 0f
+                            vm.sendAnswer(user.uuid, quiz.uuid, answer, coveredArea)
                         },
                         colors = ButtonDefaults.textButtonColors(
                             backgroundColor = Color.Blue,

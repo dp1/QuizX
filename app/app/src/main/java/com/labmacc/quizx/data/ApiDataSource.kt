@@ -13,11 +13,12 @@ class ApiDataSource {
 
     private val queue = Volley.newRequestQueue(QuizXApplication.instance)
 
-    fun sendAnswer(user_id: String, quiz_id: String, answer: String, onSuccess: (SubmissionResult) -> Unit) {
+    fun sendAnswer(user_id: String, quiz_id: String, answer: String, coveredArea: Float, onSuccess: (SubmissionResult) -> Unit) {
         val param = JSONObject()
         param.put("sender_id", user_id)
         param.put("quiz_id" , quiz_id)
         param.put("answer", answer)
+        param.put("covered_area", coveredArea)
         val url = "https://quizx.dariopetrillo.it/submit"
         val stringRequest = JsonObjectRequest(
             Request.Method.POST, url, param, { r ->
