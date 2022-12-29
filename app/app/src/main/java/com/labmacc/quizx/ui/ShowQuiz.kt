@@ -20,6 +20,8 @@ import com.labmacc.quizx.data.model.Quiz
 import com.labmacc.quizx.data.model.User
 import com.labmacc.quizx.ui.theme.wick
 import com.labmacc.quizx.ShowQuizViewModel
+import com.labmacc.quizx.data.LoginRepository
+import com.labmacc.quizx.data.QuizRepository
 import com.labmacc.quizx.ui.theme.hueca
 import com.labmacc.quizx.ui.views.ScratchView
 import kotlinx.coroutines.delay
@@ -176,13 +178,14 @@ fun ShowQuiz(
     }
 }
 
-/*
 @Preview
 @Composable
 fun PreviewShowQuiz() {
-    ShowQuiz(
-        Quiz(uuid="90202690-6245-4ba2-b073-f1ac739627c8", authorId="gpUPW7TxG0bEvAq2hJDclVH7rwP2", imageUri="https://firebasestorage.googleapis.com/v0/b/animalx-1.appspot.com/o/images%2Fcf1c389f-1935-43d5-b299-3687dcbc475f.jpeg?alt=media&token=f18d833e-91b6-4ca6-9381-a4b0e3ffb1e1", correctAnswer="test", sentToUsers=true),
-        User()
-    )
+    val vm = ShowQuizViewModel(QuizRepository.instance, LoginRepository.instance)
+    val quiz = Quiz(uuid="90202690-6245-4ba2-b073-f1ac739627c8", authorId="gpUPW7TxG0bEvAq2hJDclVH7rwP2", imageUri="https://firebasestorage.googleapis.com/v0/b/animalx-1.appspot.com/o/images%2Fcf1c389f-1935-43d5-b299-3687dcbc475f.jpeg?alt=media&token=f18d833e-91b6-4ca6-9381-a4b0e3ffb1e1", correctAnswer="test", sentToUsers=true)
+    val user = User()
+    val author = User(displayName = "ABCD")
+
+    vm.loadQuiz(quiz.uuid)
+    ShowQuiz(user, vm, quiz, author)
 }
-*/
