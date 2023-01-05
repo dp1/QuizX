@@ -1,10 +1,12 @@
 package com.labmacc.quizx.ui
 
+import android.view.KeyEvent.ACTION_DOWN
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,11 +19,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,11 +43,13 @@ import com.labmacc.quizx.ui.theme.hueca
 import com.labmacc.quizx.ui.theme.wick
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Login(
     vm: LoginViewModel,
     onComplete: () -> Unit = { }
 ) {
+    val focusManager = LocalFocusManager.current
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,14 +70,36 @@ fun Login(
         Spacer(modifier = Modifier.height(20.dp))
 
         TextField(
+            modifier = Modifier
+                .onPreviewKeyEvent {
+                    if (it.key == Key.Tab && it.nativeKeyEvent.action == ACTION_DOWN){
+                        focusManager.moveFocus(FocusDirection.Down)
+                        true
+                    } else {
+                        false
+                    }
+                },
             label = { Text(text = stringResource(R.string.prompt_email)) },
             value = vm.email.value,
-            onValueChange = { vm.emailChanged(it) }
+            onValueChange = { vm.emailChanged(it) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+            )
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         TextField(
+            modifier = Modifier
+                .onPreviewKeyEvent {
+                    if (it.key == Key.Tab && it.nativeKeyEvent.action == ACTION_DOWN){
+                        focusManager.moveFocus(FocusDirection.Down)
+                        true
+                    } else {
+                        false
+                    }
+                },
             label = { Text(text = stringResource(R.string.prompt_password)) },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
