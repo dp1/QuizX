@@ -171,14 +171,14 @@ class QuizHub(Resource):
         author_score_before = self.author_score(correct_subs, wrong_subs)
 
         correct = self.answers_equal(quiz['correctAnswer'], answer)
-        sender_score_delta = self.sender_score(covered_area, correct)
+        sender_score_delta = max(-sender['score'], self.sender_score(covered_area, correct))
 
         if correct:
             correct_subs += 1
         else:
             wrong_subs += 1
 
-        author_score_after = self.author_score(correct_subs, wrong_subs)
+        author_score_after = max(0, self.author_score(correct_subs, wrong_subs))
 
         logging.info(f'Updating scores: sender ({sender_id}) {sender_score_delta:+}, author ({author_id} {author_score_after - author_score_before:+}')
 
