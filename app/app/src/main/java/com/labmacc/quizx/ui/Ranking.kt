@@ -59,10 +59,11 @@ fun Ranking(
         Box(modifier = Modifier
             .background(colorResource(R.color.dark_sky))
             .fillMaxWidth()) {
-            if(pending > 0){
+            if( vm.loginRepository.user.value != null ){
                 Button(
                     onClick = {
-                              showChallenge(vm.nextPendingChallenge.value)
+                        if(pending > 0 )
+                            showChallenge(vm.nextPendingChallenge.value)
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.teal_700)),
                     modifier = Modifier

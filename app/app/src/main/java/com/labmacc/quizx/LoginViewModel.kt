@@ -80,11 +80,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
             val result = loginRepository.register(email.value, password.value, name.value)
             loginResult.value = LoginResult(attempted = true)
             Log.i("prova", "$email $password $name")
-
             if (result is Result.Success) {
                 loginResult.value = LoginResult(success = result.data, attempted = true)
                 Log.i("prova", "reg ok!")
-
             } else {
                 loginResult.value = LoginResult(error = R.string.register_failed, attempted = true)
                 Log.i("prova", "reg ko!")

@@ -1,5 +1,6 @@
 package com.labmacc.quizx.ui
 
+import android.util.Patterns
 import android.view.KeyEvent.ACTION_DOWN
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -10,11 +11,10 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.BottomCenter
@@ -81,12 +81,32 @@ fun Login(
                 },
             label = { Text(text = stringResource(R.string.prompt_email)) },
             value = vm.email.value,
-            onValueChange = { vm.emailChanged(it) },
+            onValueChange = {
+                vm.emailChanged(it)
+                //text = it
+                //isError = false
+                isErrorInEmail = Patterns.EMAIL_ADDRESS.matcher(it).matches()
+
+            },
+            trailingIcon = {
+                if (isError)
+                    Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colors.error)
+            },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
-                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                onNext = {
+                    focusManager.moveFocus(FocusDirection.Down) },
+            ),
+
             )
-        )
+        if (isError) {
+            Text(
+                text = "Error message",
+                color = MaterialTheme.colors.error,
+                //style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
 
         Spacer(modifier = Modifier.height(20.dp))
 
