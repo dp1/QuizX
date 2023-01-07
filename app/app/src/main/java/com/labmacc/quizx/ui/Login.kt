@@ -10,9 +10,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material3.OutlinedTextField
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -43,7 +46,7 @@ import com.labmacc.quizx.ui.theme.hueca
 import com.labmacc.quizx.ui.theme.wick
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun Login(
     vm: LoginViewModel,
@@ -57,6 +60,12 @@ fun Login(
             .fillMaxSize()
             .background(colorResource(R.color.skyblue))
     ) {
+
+
+        var isErrorInEmail by remember { mutableStateOf(false) }
+        var isErrorInPassword by remember { mutableStateOf(false) }
+        var isErrorInDisplayName by remember { mutableStateOf(false) }
+
         Spacer(modifier = Modifier.height(40.dp))
         Image(
             painter = painterResource(id = R.drawable.q1x),
@@ -69,7 +78,7 @@ fun Login(
         Divider(color = Color.White, thickness = 2.dp)
         Spacer(modifier = Modifier.height(20.dp))
 
-        TextField(
+        OutlinedTextField(
             modifier = Modifier
                 .onPreviewKeyEvent {
                     if (it.key == Key.Tab && it.nativeKeyEvent.action == ACTION_DOWN){
@@ -83,34 +92,24 @@ fun Login(
             value = vm.email.value,
             onValueChange = {
                 vm.emailChanged(it)
-                //text = it
-                //isError = false
-                isErrorInEmail = Patterns.EMAIL_ADDRESS.matcher(it).matches()
+                isErrorInEmail = Patterns.EMAIL_ADDRESS.matcher(it).matches().not()
+            },
+            supportingText = {
+                if(isErrorInEmail){
+                    Text(text =" Invalid email")
+                }
+            },
 
-            },
-            trailingIcon = {
-                if (isError)
-                    Icon(Icons.Filled.Info, "Error", tint = MaterialTheme.colors.error)
-            },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
                 onNext = {
                     focusManager.moveFocus(FocusDirection.Down) },
             ),
-
             )
-        if (isError) {
-            Text(
-                text = "Error message",
-                color = MaterialTheme.colors.error,
-                //style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 16.dp)
-            )
-        }
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        TextField(
+        OutlinedTextField(
             modifier = Modifier
                 .onPreviewKeyEvent {
                     if (it.key == Key.Tab && it.nativeKeyEvent.action == ACTION_DOWN){
@@ -124,15 +123,46 @@ fun Login(
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             value = vm.password.value,
-            onValueChange = { vm.passwordChanged(it) }
+            onValueChange = {
+                vm.passwordChanged(it)
+                isErrorInPassword = it.length < 5
+            },
+            supportingText = {
+                if(isErrorInPassword){
+                    Text(text ="Password too short")
+                }
+            }
+
         )
 
         if (vm.registerMode.value) {
             Spacer(modifier = Modifier.height(20.dp))
-            TextField(
+            OutlinedTextField(
+                modifier = Modifier
+                    .onPreviewKeyEvent {
+                        if (it.key == Key.Tab && it.nativeKeyEvent.action == ACTION_DOWN){
+                            focusManager.moveFocus(FocusDirection.Down)
+                            true
+                        } else {
+                            false
+                        }
+                    },
                 label = { Text(text = stringResource(R.string.prompt_name)) },
                 value = vm.name.value,
-                onValueChange = { vm.nameChanged(it) }
+                onValueChange = {
+                    vm.nameChanged(it)
+                    isErrorInDisplayName = it.length < 4
+                },
+                supportingText = {
+                    if(isErrorInDisplayName){
+                        Text(text ="Display name too short")
+                    }
+                },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        focusManager.moveFocus(FocusDirection.Down) },
+                ),
             )
         }
 
