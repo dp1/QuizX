@@ -30,4 +30,10 @@ class FirebaseAuthDataSource {
             Result.Error(IOException("Error logging in", e))
         }
     }
+
+    fun restoreLogin(): LoggedInUser? {
+        return auth.currentUser?.let {
+            LoggedInUser(uuid = it.uid)
+        }
+    }
 }

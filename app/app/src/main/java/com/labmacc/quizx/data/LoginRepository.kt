@@ -33,7 +33,7 @@ class LoginRepository(
             }
             return fsResult
         }
-        return Result.Error(Exception("Login failed"))
+        return Result.Error(Exception("Registration failed"))
     }
 
     suspend fun login(username: String, password: String): Result<User> {
@@ -46,6 +46,16 @@ class LoginRepository(
             }
             return fsResult
         }
-        return Result.Error(Exception("asd"))
+        return Result.Error(Exception("Login failed"))
+    }
+
+    suspend fun restoreLogin() {
+        authDataSource.restoreLogin()?.let { saved ->
+            loggedInUser = saved
+            val fsResult = firestoreDataSource.getUser(saved.uuid)
+            if (fsResult is Result.Success) {
+                user.value = fsResult.data
+            }
+        }
     }
 }
