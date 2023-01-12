@@ -1,20 +1,17 @@
 package com.labmacc.quizx
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.labmacc.quizx.data.LoginRepository
 import com.labmacc.quizx.data.QuizRepository
 import com.labmacc.quizx.data.RankingRepository
 import com.labmacc.quizx.data.model.User
+import com.labmacc.quizx.data.util.Result
 import kotlinx.coroutines.launch
 
 class RankingViewModel(
@@ -42,7 +39,11 @@ class RankingViewModel(
     val nextPendingChallenge = mutableStateOf("")
 
     init {
-        viewModelScope.launch { loginRepository.restoreLogin() }
+        viewModelScope.launch {
+            if (loginRepository.restoreLogin() is Result.Success) {
+                onLoggedIn()
+            }
+        }
 
         rankingRepository.listenForRatingChanges {
             ranking.clear()

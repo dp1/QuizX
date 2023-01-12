@@ -49,13 +49,15 @@ class LoginRepository(
         return Result.Error(Exception("Login failed"))
     }
 
-    suspend fun restoreLogin() {
+    suspend fun restoreLogin(): Result<User> {
         authDataSource.restoreLogin()?.let { saved ->
             loggedInUser = saved
             val fsResult = firestoreDataSource.getUser(saved.uuid)
             if (fsResult is Result.Success) {
                 user.value = fsResult.data
+                return fsResult
             }
         }
+        return Result.Error(Exception("Failed to restore persisted login"))
     }
 }
