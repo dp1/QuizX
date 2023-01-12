@@ -59,23 +59,39 @@ fun Ranking(
         Box(modifier = Modifier
             .background(colorResource(R.color.dark_sky))
             .fillMaxWidth()) {
-            if( vm.loginRepository.user.value != null ){
-                Button(
-                    onClick = {
-                        if(pending > 0 )
-                            showChallenge(vm.nextPendingChallenge.value)
-                    },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.teal_700)),
-                    modifier = Modifier
-                        .align(alignment = Alignment.Center)
-                        .padding(5.dp)
-                ){
-                    Text(
-                        text = if (pending == 1) "$pending CHALLENGE AVAILABLE" else "$pending CHALLENGES AVAILABLE" ,
-                        color = Color.White
-                    )
+            if (vm.loginRepository.user.value != null) {
+                Column(modifier = Modifier
+                    .fillMaxWidth()) {
+                    Button(
+                        onClick = {
+                            if(pending > 0 )
+                                showChallenge(vm.nextPendingChallenge.value)
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.teal_700)),
+                        modifier = Modifier
+                            .align(alignment = Alignment.CenterHorizontally)
+                            .padding(5.dp)
+                    ){
+                        Text(
+                            text = if (pending == 1) "$pending CHALLENGE AVAILABLE" else "$pending CHALLENGES AVAILABLE" ,
+                            color = Color.White
+                        )
+                    }
+
+                    Button(
+                        onClick = { vm.signOut() },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.teal_700)),
+                        modifier = Modifier
+                            .align(alignment = Alignment.CenterHorizontally)
+                            .padding(bottom = 5.dp)
+                    ) {
+                        Text(
+                            text = "LOG OUT",
+                            color = Color.White
+                        )
+                    }
                 }
-            }else{
+            } else {
                 Button(
                     onClick = doLogin,
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.teal_700)),

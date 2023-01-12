@@ -60,4 +60,10 @@ class LoginRepository(
         }
         return Result.Error(Exception("Failed to restore persisted login"))
     }
+
+    fun signOut() {
+        authDataSource.signOut()
+        loggedInUser = null
+        user.value = null
+    }
 }

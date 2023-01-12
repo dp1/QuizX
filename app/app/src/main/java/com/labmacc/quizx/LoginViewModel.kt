@@ -44,6 +44,15 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     val password = mutableStateOf("")
     val name = mutableStateOf("")
 
+    fun prepare() {
+        loginFormState.value = LoginFormState()
+        loginResult.value = LoginResult()
+        registerMode.value = false
+        email.value = ""
+        password.value = ""
+        name.value = ""
+    }
+
     fun emailChanged(value: String) {
         email.value = value
         loginDataChanged()

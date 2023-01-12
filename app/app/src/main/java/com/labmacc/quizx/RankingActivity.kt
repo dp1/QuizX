@@ -165,6 +165,9 @@ class RankingActivity : ComponentActivity() {
             navController.addOnDestinationChangedListener { _, destination, _ ->
                 destination.route?.let {
                     currentDestination = it
+                    if (it == NavRoutes.Login.route) {
+                        vm.loginViewModel.prepare()
+                    }
                 }
             }
         }

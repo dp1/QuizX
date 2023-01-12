@@ -36,4 +36,8 @@ class FirebaseAuthDataSource {
             LoggedInUser(uuid = it.uid)
         }
     }
+
+    fun signOut() {
+        auth.signOut()
+    }
 }

@@ -63,4 +63,10 @@ class RankingViewModel(
     fun currentUser(): MutableState<User?> {
         return loginRepository.user
     }
+
+    fun signOut() {
+        loginRepository.signOut()
+        numPendingChallenges.value = 0
+        nextPendingChallenge.value = ""
+    }
 }
