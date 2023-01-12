@@ -32,7 +32,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import coil.compose.rememberImagePainter
 import com.labmacc.quizx.R
-import com.labmacc.quizx.UploadState
+import com.labmacc.quizx.vm.UploadState
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

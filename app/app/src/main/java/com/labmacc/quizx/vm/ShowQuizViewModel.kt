@@ -1,4 +1,4 @@
-package com.labmacc.quizx
+package com.labmacc.quizx.vm
 
 import android.graphics.Bitmap
 import android.util.Log
@@ -10,6 +10,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import coil.imageLoader
 import coil.request.ImageRequest
+import com.labmacc.quizx.QuizXApplication
 import com.labmacc.quizx.data.LoginRepository
 import com.labmacc.quizx.data.QuizRepository
 import com.labmacc.quizx.data.model.Quiz

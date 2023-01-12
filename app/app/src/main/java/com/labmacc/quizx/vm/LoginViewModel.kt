@@ -1,4 +1,4 @@
-package com.labmacc.quizx
+package com.labmacc.quizx.vm
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.labmacc.quizx.R
 import com.labmacc.quizx.data.LoginRepository
 import kotlinx.coroutines.launch
 import com.labmacc.quizx.data.util.Result

@@ -1,4 +1,4 @@
-package com.labmacc.quizx
+package com.labmacc.quizx.vm
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf

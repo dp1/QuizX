@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.labmacc.quizx.ui.Login
 import com.labmacc.quizx.ui.ShowQuiz
 import com.labmacc.quizx.ui.SplashScreen
+import com.labmacc.quizx.vm.RankingViewModel
 
 class ShakeListener(val triggerDelayMs: Long, val onTrigger: () -> Unit) : SensorEventListener {
     companion object { const val TAG = "SHAKE" }

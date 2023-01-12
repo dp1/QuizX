@@ -1,6 +1,5 @@
 package com.labmacc.quizx.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +21,7 @@ import com.labmacc.quizx.R
 import com.labmacc.quizx.data.model.Quiz
 import com.labmacc.quizx.data.model.User
 import com.labmacc.quizx.ui.theme.wick
-import com.labmacc.quizx.ShowQuizViewModel
+import com.labmacc.quizx.vm.ShowQuizViewModel
 import com.labmacc.quizx.data.LoginRepository
 import com.labmacc.quizx.data.QuizRepository
 import com.labmacc.quizx.ui.theme.hueca
