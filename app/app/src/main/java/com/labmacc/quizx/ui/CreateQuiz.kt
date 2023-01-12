@@ -65,9 +65,10 @@ fun CameraView(
         preview.setSurfaceProvider(previewView.surfaceProvider)
     }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(colorResource(R.color.skyblue))
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(R.color.skyblue))
     ) {
         AndroidView(modifier = Modifier
             .fillMaxSize()
@@ -76,9 +77,10 @@ fun CameraView(
             .clip(RoundedCornerShape(10.dp)),
             factory = { previewView }
         )
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
             contentAlignment = Alignment.BottomCenter
         ) {
             IconButton(
@@ -109,43 +111,49 @@ fun ImageView(
     onSubmit: () -> Unit = { }
 ) {
     Box {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(R.color.skyblue))
-        ) {
-            Image(modifier = Modifier
-                .padding(10.dp)
-                .weight(1f)
-                .clip(RoundedCornerShape(10.dp))
+        Column(
+            modifier = Modifier
                 .fillMaxSize()
-                .background(Color.LightGray),
+                .background(colorResource(R.color.skyblue))
+        ) {
+            Image(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .weight(1f)
+                    .clip(RoundedCornerShape(10.dp))
+                    .fillMaxSize()
+                    .background(Color.LightGray),
                 painter = rememberImagePainter(photoUri),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
 
-            Row(modifier = Modifier
-                .imePadding()
-                .padding(10.dp)
-                .wrapContentHeight()
-                .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier
+                    .imePadding()
+                    .padding(10.dp)
+                    .wrapContentHeight()
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
 
                 TextField(
-                    value = answer ,
+                    value = answer,
                     onValueChange = onAnswerChanged,
                     label = { Text("Correct Answer") },
                     singleLine = true,
                     textStyle = TextStyle(color = Color.Black, fontWeight = FontWeight.Bold),
                 )
                 Spacer(Modifier.size(10.dp))
-                Button(modifier = Modifier
-                    .wrapContentWidth(),
+                Button(
+                    modifier = Modifier
+                        .wrapContentWidth(),
                     onClick = onSubmit,
                     colors = ButtonDefaults.textButtonColors(
                         backgroundColor = Color.Blue,
-                    )) {
-                    Text("SEND",color = Color.White)
+                    )
+                ) {
+                    Text("SEND", color = Color.White)
                 }
 
             }
@@ -157,10 +165,11 @@ fun ImageView(
     }
 }
 
-private suspend fun Context.getCameraProvider(): ProcessCameraProvider = suspendCoroutine { continuation ->
-    ProcessCameraProvider.getInstance(this).also { cameraProvider ->
-        cameraProvider.addListener({
-            continuation.resume(cameraProvider.get())
-        }, ContextCompat.getMainExecutor(this))
+private suspend fun Context.getCameraProvider(): ProcessCameraProvider =
+    suspendCoroutine { continuation ->
+        ProcessCameraProvider.getInstance(this).also { cameraProvider ->
+            cameraProvider.addListener({
+                continuation.resume(cameraProvider.get())
+            }, ContextCompat.getMainExecutor(this))
+        }
     }
-}

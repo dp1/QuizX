@@ -49,11 +49,10 @@ fun SplashScreen(
         contentDescription = "",
         alignment = Alignment.Center,
         modifier = Modifier
-            .fillMaxSize().
-            padding(40.dp).
-            scale(scale.value)
+            .fillMaxSize()
+            .padding(40.dp)
+            .scale(scale.value)
     )
-
 }
 
 @Preview(showBackground = true)

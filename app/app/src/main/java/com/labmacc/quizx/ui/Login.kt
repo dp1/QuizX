@@ -80,7 +80,7 @@ fun Login(
         OutlinedTextField(
             modifier = Modifier
                 .onPreviewKeyEvent {
-                    if (it.key == Key.Tab && it.nativeKeyEvent.action == ACTION_DOWN){
+                    if (it.key == Key.Tab && it.nativeKeyEvent.action == ACTION_DOWN) {
                         focusManager.moveFocus(FocusDirection.Down)
                         true
                     } else {
@@ -94,24 +94,25 @@ fun Login(
                 isErrorInEmail = Patterns.EMAIL_ADDRESS.matcher(it).matches().not()
             },
             supportingText = {
-                if(isErrorInEmail){
-                    Text(text =" Invalid email")
+                if (isErrorInEmail) {
+                    Text(text = " Invalid email")
                 }
             },
 
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
                 onNext = {
-                    focusManager.moveFocus(FocusDirection.Down) },
+                    focusManager.moveFocus(FocusDirection.Down)
+                },
             ),
-            )
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
             modifier = Modifier
                 .onPreviewKeyEvent {
-                    if (it.key == Key.Tab && it.nativeKeyEvent.action == ACTION_DOWN){
+                    if (it.key == Key.Tab && it.nativeKeyEvent.action == ACTION_DOWN) {
                         focusManager.moveFocus(FocusDirection.Down)
                         true
                     } else {
@@ -127,8 +128,8 @@ fun Login(
                 isErrorInPassword = it.length < 5
             },
             supportingText = {
-                if(isErrorInPassword){
-                    Text(text ="Password too short")
+                if (isErrorInPassword) {
+                    Text(text = "Password too short")
                 }
             }
 
@@ -139,7 +140,7 @@ fun Login(
             OutlinedTextField(
                 modifier = Modifier
                     .onPreviewKeyEvent {
-                        if (it.key == Key.Tab && it.nativeKeyEvent.action == ACTION_DOWN){
+                        if (it.key == Key.Tab && it.nativeKeyEvent.action == ACTION_DOWN) {
                             focusManager.moveFocus(FocusDirection.Down)
                             true
                         } else {
@@ -153,14 +154,15 @@ fun Login(
                     isErrorInDisplayName = it.length < 4
                 },
                 supportingText = {
-                    if(isErrorInDisplayName){
-                        Text(text ="Display name too short")
+                    if (isErrorInDisplayName) {
+                        Text(text = "Display name too short")
                     }
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(
                     onNext = {
-                        focusManager.moveFocus(FocusDirection.Down) },
+                        focusManager.moveFocus(FocusDirection.Down)
+                    },
                 ),
             )
         }

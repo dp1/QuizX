@@ -56,24 +56,28 @@ fun Ranking(
             }
         }
         val pending = vm.numPendingChallenges.value
-        Box(modifier = Modifier
-            .background(colorResource(R.color.dark_sky))
-            .fillMaxWidth()) {
+        Box(
+            modifier = Modifier
+                .background(colorResource(R.color.dark_sky))
+                .fillMaxWidth()
+        ) {
             if (vm.loginRepository.user.value != null) {
-                Column(modifier = Modifier
-                    .fillMaxWidth()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
                     Button(
                         onClick = {
-                            if(pending > 0 )
+                            if (pending > 0)
                                 showChallenge(vm.nextPendingChallenge.value)
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.teal_700)),
                         modifier = Modifier
                             .align(alignment = Alignment.CenterHorizontally)
                             .padding(5.dp)
-                    ){
+                    ) {
                         Text(
-                            text = if (pending == 1) "$pending CHALLENGE AVAILABLE" else "$pending CHALLENGES AVAILABLE" ,
+                            text = if (pending == 1) "$pending CHALLENGE AVAILABLE" else "$pending CHALLENGES AVAILABLE",
                             color = Color.White
                         )
                     }
@@ -112,14 +116,16 @@ fun Ranking(
 
 @Composable
 fun RankingUser(idx: Int, user: User, currentUser: User?) {
-    val background = if (currentUser?.uuid == user.uuid) colorResource(R.color.teal_700) else colorResource(R.color.blue)
+    val background =
+        if (currentUser?.uuid == user.uuid) colorResource(R.color.teal_700) else colorResource(R.color.blue)
 
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 0.dp)
-        .clip(RoundedCornerShape(10.dp))
-        .background(background)
-        .padding(16.dp)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 0.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(background)
+            .padding(16.dp)
     ) {
         Text(
             modifier = Modifier.weight(1f),
@@ -148,5 +154,11 @@ fun RankingUser(idx: Int, user: User, currentUser: User?) {
 @Preview
 @Composable
 fun PreviewRanking() {
-    Ranking(RankingViewModel(RankingRepository.instance, LoginRepository.instance, QuizRepository.instance))
+    Ranking(
+        RankingViewModel(
+            RankingRepository.instance,
+            LoginRepository.instance,
+            QuizRepository.instance
+        )
+    )
 }

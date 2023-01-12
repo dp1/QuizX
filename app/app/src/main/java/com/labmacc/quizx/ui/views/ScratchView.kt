@@ -22,7 +22,7 @@ class ScratchView(context: Context?) : View(context), View.OnTouchListener {
         strokeCap = Paint.Cap.ROUND
     }
 
-    private var prevPosition = Pair(0f,0f)
+    private var prevPosition = Pair(0f, 0f)
 
     init {
         setOnTouchListener(this)
@@ -92,7 +92,13 @@ class ScratchView(context: Context?) : View(context), View.OnTouchListener {
                 invalidate()
             }
             MotionEvent.ACTION_MOVE -> {
-                bufferCanvas.drawLine(prevPosition.first, prevPosition.second, event.x, event.y, circlePaint)
+                bufferCanvas.drawLine(
+                    prevPosition.first,
+                    prevPosition.second,
+                    event.x,
+                    event.y,
+                    circlePaint
+                )
                 prevPosition = Pair(event.x, event.y)
                 invalidate()
             }

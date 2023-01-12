@@ -36,8 +36,8 @@ fun ShowQuiz(
     quiz: Quiz,
     author: User,
     onComplete: () -> Unit = {}
-){
-    var answer by remember{ mutableStateOf("")}
+) {
+    var answer by remember { mutableStateOf("") }
     if (vm.submissionResult.value != null) {
         Box(
             Modifier
@@ -54,9 +54,10 @@ fun ShowQuiz(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(color = Color.Blue)
-            ){
-                if(vm.submissionResult.value!!.result) {
-                    Column(modifier = Modifier.fillMaxSize(),
+            ) {
+                if (vm.submissionResult.value!!.result) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
                     ) {
                         Text(
@@ -77,7 +78,8 @@ fun ShowQuiz(
                         )
                     }
                 } else {
-                    Column(modifier = Modifier.fillMaxSize(),
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
                     ) {
                         Text(
@@ -152,7 +154,7 @@ fun ShowQuiz(
                         .wrapContentHeight()
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     TextField(
                         value = answer,
                         onValueChange = { answer = it },
@@ -188,7 +190,13 @@ fun ShowQuiz(
 @Composable
 fun PreviewShowQuiz() {
     val vm = ShowQuizViewModel(QuizRepository.instance, LoginRepository.instance)
-    val quiz = Quiz(uuid="90202690-6245-4ba2-b073-f1ac739627c8", authorId="gpUPW7TxG0bEvAq2hJDclVH7rwP2", imageUri="https://firebasestorage.googleapis.com/v0/b/animalx-1.appspot.com/o/images%2Fcf1c389f-1935-43d5-b299-3687dcbc475f.jpeg?alt=media&token=f18d833e-91b6-4ca6-9381-a4b0e3ffb1e1", correctAnswer="test", sentToUsers=true)
+    val quiz = Quiz(
+        uuid = "90202690-6245-4ba2-b073-f1ac739627c8",
+        authorId = "gpUPW7TxG0bEvAq2hJDclVH7rwP2",
+        imageUri = "https://firebasestorage.googleapis.com/v0/b/animalx-1.appspot.com/o/images%2Fcf1c389f-1935-43d5-b299-3687dcbc475f.jpeg?alt=media&token=f18d833e-91b6-4ca6-9381-a4b0e3ffb1e1",
+        correctAnswer = "test",
+        sentToUsers = true
+    )
     val user = User()
     val author = User(displayName = "ABCD")
 
