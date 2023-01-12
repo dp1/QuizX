@@ -1,5 +1,6 @@
 package com.labmacc.quizx.vm
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -57,6 +58,11 @@ class RankingViewModel(
                 numPendingChallenges.value = it.size
                 nextPendingChallenge.value = if(it.isNotEmpty()) it[0] else ""
             }
+        }
+
+        rankingRepository.listenForRatingChanges {
+            ranking.clear()
+            ranking.addAll(it)
         }
     }
 
