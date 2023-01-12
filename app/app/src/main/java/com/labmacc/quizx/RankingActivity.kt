@@ -1,5 +1,7 @@
 package com.labmacc.quizx
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
@@ -7,6 +9,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -111,6 +114,8 @@ class RankingActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupNotifications()
+
         setContent {
             val navController = rememberNavController()
             NavHost(
@@ -153,7 +158,7 @@ class RankingActivity : ComponentActivity() {
                             onComplete = {
                                 vm.showQuizViewModel.resetAnswer()
                                 navController.navigate(NavRoutes.Ranking.route) {
-                                    popUpTo(NavRoutes.Ranking.route){
+                                    popUpTo(NavRoutes.Ranking.route) {
                                         inclusive = true
                                     }
                                 }
@@ -184,5 +189,18 @@ class RankingActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         shakeListener.unregister(sensorManager)
+    }
+
+    private fun setupNotifications() {
+        val intent = Intent(this, NotificationReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val interval = 60 * 1000L // milliseconds
+        alarmManager.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            System.currentTimeMillis() + interval,
+            interval,
+            pendingIntent
+        )
     }
 }
