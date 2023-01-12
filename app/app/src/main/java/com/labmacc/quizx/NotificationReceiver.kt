@@ -12,8 +12,12 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 
 class NotificationReceiver : BroadcastReceiver() {
+    companion object {
+        const val TAG = "NotificationRec"
+    }
+
     override fun onReceive(context: Context, intent: Intent) {
-        Log.i("NotificationReceiver", "Triggered")
+        Log.i(TAG, "Triggered")
 
         val channelId = "Notifications"
         val channelName = "com.labmacc.quizx"
@@ -37,6 +41,6 @@ class NotificationReceiver : BroadcastReceiver() {
         }
 
         notificationManager.notify(0, builder.build())
-        Log.i(RankingActivity.TAG, "Notification sent!")
+        Log.i(TAG, "Notification sent!")
     }
 }
