@@ -1,19 +1,29 @@
 package com.labmacc.quizx
 
+import android.Manifest
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.labmacc.quizx.ui.Ranking
 import kotlin.math.sqrt
 import androidx.navigation.compose.NavHost
@@ -179,6 +189,7 @@ class RankingActivity : ComponentActivity() {
         }
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        requestPermissions()
     }
 
     override fun onResume() {
@@ -193,7 +204,8 @@ class RankingActivity : ComponentActivity() {
 
     private fun setupNotifications() {
         val intent = Intent(this, NotificationReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        val pendingIntent =
+            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val interval = 60 * 1000L // milliseconds
         alarmManager.setInexactRepeating(
@@ -202,5 +214,26 @@ class RankingActivity : ComponentActivity() {
             interval,
             pendingIntent
         )
+    }
+
+    private val permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            Log.i(TAG, "Permission granted")
+        } else {
+            Log.i(TAG, "Permission denied :(")
+        }
+    }
+
+    private fun requestPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "Permission already granted")
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.POST_NOTIFICATIONS)) {
+            Log.i(TAG, "Showing permission rationale")
+        } else {
+            Log.i(TAG, "Launching permission request")
+            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
     }
 }
