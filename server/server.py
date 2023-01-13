@@ -80,7 +80,7 @@ def on_new_quiz(quiz_id, doc):
                 'pendingChallenges': ArrayUnion([quiz_id]),
                 'hasNew': True
             })
-            logging.info(f'Added quiz {quiz_id} to user {user.id}')
+            logging.info(f'Added quiz {quiz_id} to user {user.to_dict()}')
 
     # Users with lower score
     for user in users_ref.where('score', '<', author_score).order_by('score', direction=Query.DESCENDING).limit(USERS_BELOW).stream():
@@ -89,7 +89,7 @@ def on_new_quiz(quiz_id, doc):
                 'pendingChallenges': ArrayUnion([quiz_id]),
                 'hasNew': True
             })
-            logging.info(f'Added quiz {quiz_id} to user {user.id}')
+            logging.info(f'Added quiz {quiz_id} to user {user.to_dict()}')
 
     quizzes_ref.document(quiz_id).update(
         {'sentToUsers': True}
