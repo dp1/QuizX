@@ -104,13 +104,14 @@ quizzes_ref.where('sentToUsers', '==', False).on_snapshot(on_snapshot)
 app = Flask(__name__)
 api = Api(app)
 
-parser = reqparse.RequestParser()
-parser.add_argument('sender_id', required=True)
-parser.add_argument('quiz_id', required=True)
-parser.add_argument('answer', required=True)
-parser.add_argument('covered_area', required=True)
-
 class QuizHub(Resource):
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('sender_id', required=True)
+        self.parser.add_argument('quiz_id', required=True)
+        self.parser.add_argument('answer', required=True)
+        self.parser.add_argument('covered_area', required=True)
+
     def answers_equal(self, a: str, b: str):
         return a.lower().strip() == b.lower().strip()
 
@@ -135,7 +136,7 @@ class QuizHub(Resource):
             return -round(3 + (1 - covered_area) * (SCORE_K - 3))
 
     def post(self):
-        args = parser.parse_args()
+        args = self.parser.parse_args()
         sender_id = args['sender_id']
         quiz_id = args['quiz_id']
         answer = args['answer']
@@ -218,7 +219,7 @@ class CheckHub(Resource):
         user = users_ref.document(uuid).get()
         if not user.exists:
             logging.warning(f'User {uuid} does not exist, skipping check')
-            return {"hasNew": False}
+            return {"has_new": False}
         user = user.to_dict()
 
         has_new = user.get('hasNew', False)
