@@ -21,7 +21,8 @@ args = parser.parse_args()
         "uuid": "u0",
         "displayName": "User Name",
         "score": 42,
-        "pendingChallenges": ["q0", "q1"]
+        "pendingChallenges": ["q0", "q1"],
+        "hasNew": true
     },
     "u1": {
         ...
@@ -205,7 +206,26 @@ class QuizHub(Resource):
             "score_obtained": sender_score_delta
         }
 
+class CheckHub(Resource):
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('uuid', required=True)
+
+    def post(self):
+        args = self.parser.parse_args()
+        uuid = args['uuid']
+
+        user = users_ref.document(uuid).get()
+        if not user.exists:
+            logging.warning(f'User {uuid} does not exist, skipping check')
+            return {"hasNew": False}
+        user = user.to_dict()
+
+        has_new = user.get('hasNew', False)
+        return {"has_new": has_new}
+
 api.add_resource(QuizHub, '/submit')
+api.add_resource(CheckHub, '/check')
 
 if __name__ == '__main__':
     app.run('0.0.0.0', 5000)
