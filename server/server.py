@@ -76,17 +76,19 @@ def on_new_quiz(quiz_id, doc):
     # Users with higher score
     for user in users_ref.where('score', '>=', author_score).order_by('score').limit(USERS_ABOVE + 1).stream():
         if user.id != author_id:
-            users_ref.document(user.id).update(
-                {'pendingChallenges': ArrayUnion([quiz_id])}
-            )
+            users_ref.document(user.id).update({
+                'pendingChallenges': ArrayUnion([quiz_id]),
+                'hasNew': True
+            })
             logging.info(f'Added quiz {quiz_id} to user {user.id}')
 
     # Users with lower score
     for user in users_ref.where('score', '<', author_score).order_by('score', direction=Query.DESCENDING).limit(USERS_BELOW).stream():
         if user.id != author_id:
-            users_ref.document(user.id).update(
-                {'pendingChallenges': ArrayUnion([quiz_id])}
-            )
+            users_ref.document(user.id).update({
+                'pendingChallenges': ArrayUnion([quiz_id]),
+                'hasNew': True
+            })
             logging.info(f'Added quiz {quiz_id} to user {user.id}')
 
     quizzes_ref.document(quiz_id).update(
@@ -221,8 +223,11 @@ class CheckHub(Resource):
             logging.warning(f'User {uuid} does not exist, skipping check')
             return {"has_new": False}
         user = user.to_dict()
-
         has_new = user.get('hasNew', False)
+
+        if has_new:
+            users_ref.document(uuid).update({'hasNew': False})
+
         return {"has_new": has_new}
 
 api.add_resource(QuizHub, '/submit')
