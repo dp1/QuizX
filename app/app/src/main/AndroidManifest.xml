@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizX"
         tools:targetApi="31">
+
         <activity
             android:name=".CreateQuizActivity"
             android:exported="false">
@@ -39,10 +40,18 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <receiver
             android:name=".NotificationReceiver"
             android:enabled="true"
             android:exported="true" />
+
+        <service
+            android:name=".NotificationService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:enabled="true"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

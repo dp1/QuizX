@@ -7,6 +7,8 @@ import com.android.volley.toolbox.Volley
 import com.labmacc.quizx.QuizXApplication
 import com.labmacc.quizx.data.model.SubmissionResult
 import org.json.JSONObject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class ApiDataSource {
     companion object { const val TAG = "ApiDS" }
@@ -35,5 +37,21 @@ class ApiDataSource {
             }
         )
         queue.add(stringRequest)
+    }
+
+    suspend fun hasNewQuizzes(uuid: String) = suspendCoroutine<Boolean> { cont ->
+        val param = JSONObject()
+        param.put("uuid", uuid)
+        val url = "https://quizx.dariopetrillo.it/check"
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, param, { r->
+                val elem = r as JSONObject
+                cont.resume(elem.getBoolean("has_new"))
+            }, {
+                Log.e(TAG, "Api request failed: $it")
+                cont.resume(false)
+            }
+        )
+        queue.add(request)
     }
 }
