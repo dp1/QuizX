@@ -42,8 +42,8 @@ args = parser.parse_args()
 }
 """
 
-USERS_ABOVE = 3
-USERS_BELOW = 3
+USERS_ABOVE = 5
+USERS_BELOW = 5
 SCORE_K = 10
 
 cred = credentials.Certificate(args.credentials_file)
