@@ -57,24 +57,25 @@ fun SplashScreen(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+            modifier = Modifier.fillMaxWidth().padding(top = 300.dp),
+            text = "Shake to create a quiz",
+            textAlign = TextAlign.Center,
+            color = Color.LightGray,
+            fontFamily = wick,
+            fontSize = 20.sp
+        )
             Image(
                 painter = painterResource(id = R.drawable.q1),
                 contentDescription = "",
                 alignment = Alignment.Center,
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxWidth()
-                    .padding(40.dp)
+                    .fillMaxSize()
+                    .padding(bottom = 190.dp)
                     .scale(scale.value)
             )
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = "Shake to create a quiz",
-                textAlign = TextAlign.Center,
-                color = Color.LightGray,
-                fontFamily = wick,
-                fontSize = 20.sp
-            )
+
         }
     }
 }
